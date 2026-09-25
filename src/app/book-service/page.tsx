@@ -10,14 +10,14 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
-import { BANGALORE_AREAS, TIME_SLOTS, AC_TYPES, AC_BRANDS } from '@/lib/constants/areas';
+import { SERVICE_CITIES, TIME_SLOTS, AC_TYPES, AC_BRANDS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 
 function BookingFlowContent() {
   const searchParams = useSearchParams();
   const initialService = searchParams.get('service') || 'ac-service';
-  const initialArea = searchParams.get('area') || 'Indiranagar';
+  const initialArea = searchParams.get('area') || 'Bangalore';
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -108,6 +108,15 @@ function BookingFlowContent() {
           preferredTimeSlot,
           customerName: customerName.trim(),
           customerMobile: customerMobile.replace(/[\s-]/g, ''),
+          acType,
+          acBrand,
+          acAge,
+          problemDescription: problemDescription.trim() || undefined,
+          customerEmail: customerEmail.trim() || undefined,
+          addressLine1: addressLine1.trim(),
+          addressLine2: addressLine2.trim() || undefined,
+          pincode,
+          landmark: landmark.trim() || undefined,
         }),
       });
 
@@ -150,7 +159,7 @@ function BookingFlowContent() {
           Schedule Your AC Service Visit
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 mt-1">
-          Zero upfront advance • Pay after service • Certified Bangalore technicians
+          Zero upfront advance • Pay after service • City-wise support coordination
         </p>
       </div>
 
@@ -335,7 +344,7 @@ function BookingFlowContent() {
                 Step 3: Service Location & Contact
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                Enter your Bangalore address and phone number for dispatch verification.
+                Enter your address and phone number for service coordination and technician dispatch verification.
               </p>
             </div>
 
@@ -419,20 +428,20 @@ function BookingFlowContent() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Bangalore Area *
+                    City *
                   </label>
                   <select
                     value={selectedArea}
                     onChange={(e) => {
                       setSelectedArea(e.target.value);
-                      const matched = BANGALORE_AREAS.find((a) => a.areaName === e.target.value);
+                      const matched = SERVICE_CITIES.find((city) => city.areaName === e.target.value);
                       if (matched) setPincode(matched.pincode);
                     }}
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm"
                   >
-                    {BANGALORE_AREAS.map((a) => (
-                      <option key={a.id} value={a.areaName}>
-                        {a.areaName}
+                    {SERVICE_CITIES.map((city) => (
+                      <option key={city.id} value={city.areaName}>
+                        {city.areaName}
                       </option>
                     ))}
                   </select>
@@ -567,7 +576,7 @@ function BookingFlowContent() {
               <div className="flex justify-between items-start pb-3 border-b border-slate-200">
                 <span className="font-semibold text-slate-500">Address</span>
                 <span className="text-slate-800 text-right max-w-xs">
-                  {addressLine1}, {selectedArea}, Bangalore - {pincode}
+                  {addressLine1}, {selectedArea} - {pincode}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -627,7 +636,7 @@ function BookingFlowContent() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Location</span>
-                <span className="font-semibold text-slate-800">{selectedArea}, Bangalore</span>
+                <span className="font-semibold text-slate-800">{selectedArea}</span>
               </div>
             </div>
 

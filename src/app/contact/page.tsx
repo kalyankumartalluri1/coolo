@@ -84,7 +84,7 @@ export default function ContactPage() {
             Contact Coolo Support
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-3">
-            Have questions regarding residential AC service, corporate quotes, AMC packages, or technician arrival? Our Bangalore team is here to assist.
+            Have questions regarding residential AC service, corporate quotes, AMC packages, or technician arrival? Our central support desk is here to assist across all cities we serve.
           </p>
         </div>
 

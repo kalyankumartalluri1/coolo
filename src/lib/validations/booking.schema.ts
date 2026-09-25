@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const quickBookingSchema = z.object({
   serviceSlug: z.string().min(1, 'Please select a service'),
-  areaName: z.string().min(1, 'Please select your area in Bangalore'),
+  areaName: z.string().min(1, 'Please select your city'),
   preferredDate: z.string().min(1, 'Please select a preferred date'),
   preferredTimeSlot: z.string().min(1, 'Please select a time slot'),
   customerName: z

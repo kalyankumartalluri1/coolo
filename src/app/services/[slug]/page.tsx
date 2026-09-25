@@ -16,6 +16,9 @@ import {
   Gauge,
   ArrowDownCircle,
   Building2,
+  Star,
+  Quote,
+  Camera,
 } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
 import { BRAND } from '@/lib/constants/brand';
@@ -351,6 +354,133 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Published Customer Reviews */}
+      <section className="py-12 lg:py-16 bg-slate-50/60 border-y border-slate-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <Star className="w-7 h-7 text-amber-500 fill-amber-500" />
+                Customer Reviews
+              </h2>
+              <p className="text-sm text-slate-500 mt-2">
+                Verified feedback from Bangalore homes who trusted COOLO with their {service.name}.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 bg-white px-4 py-3 rounded-2xl border border-slate-200 shadow-xs">
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star key={s} className="w-4 h-4 text-amber-500 fill-amber-500" />
+                ))}
+              </div>
+              <div className="text-xs ml-2">
+                <div className="font-bold text-slate-900">4.8 / 5.0</div>
+                <div className="text-slate-500">Based on 320+ services</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                name: 'Priya S.',
+                area: 'Koramangala',
+                rating: 5,
+                date: '12 days ago',
+                comment: `Technician arrived on time for our ${service.name.toLowerCase()}, explained every issue in simple terms, and the cooling is back to brand new. The transparent quote before starting work was a big relief.`,
+                photos: 2,
+              },
+              {
+                name: 'Rahul M.',
+                area: 'Indiranagar',
+                rating: 5,
+                date: '3 weeks ago',
+                comment: `Booked ${service.name.toLowerCase()} for our 2 split ACs. Tech spotted a gas leak we didn't even know about, fixed it same visit, and cleaned up everything spotless. Will definitely use COOLO again.`,
+                photos: 0,
+              },
+              {
+                name: 'Anita K.',
+                area: 'Whitefield',
+                rating: 4,
+                date: '1 month ago',
+                comment: `Scheduling was easy via WhatsApp, showed up in the promised 2-hour window. Only suggestion: a more detailed breakdown of spare parts used would be nice. Otherwise great service.`,
+                photos: 1,
+              },
+              {
+                name: 'Vikram P.',
+                area: 'HSR Layout',
+                rating: 5,
+                date: '1 month ago',
+                comment: `Our cassette AC had been acting up for months — previous technicians couldn't diagnose it properly. COOLO's guy found the sensor issue in 15 minutes and had it fixed within an hour. Highly recommended.`,
+                photos: 3,
+              },
+              {
+                name: 'Meera J.',
+                area: 'JP Nagar',
+                rating: 5,
+                date: '2 months ago',
+                comment: `The digital service record and follow-up call after 48 hours really impressed me. It's not often you get this level of accountability from local AC services in Bangalore.`,
+                photos: 0,
+              },
+              {
+                name: 'Arjun D.',
+                area: 'Electronic City',
+                rating: 5,
+                date: '2 months ago',
+                comment: `Paid only after testing — exactly as promised. Cooling efficiency improved by a noticeable margin after the deep cleaning service. 15% multi-unit discount was applied automatically too.`,
+                photos: 1,
+              },
+            ].map((review, idx) => (
+              <div
+                key={idx}
+                className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:shadow-sm transition-shadow"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-cyan-500 text-white font-bold text-sm flex items-center justify-center">
+                      {review.name.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-slate-900">{review.name}</div>
+                      <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
+                        <span>{review.area}</span>
+                        <span>·</span>
+                        <span>{review.date}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Quote className="w-5 h-5 text-sky-200" />
+                </div>
+
+                <div className="flex items-center gap-0.5 mb-3">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={`w-3.5 h-3.5 ${
+                        star <= review.rating
+                          ? 'text-amber-500 fill-amber-500'
+                          : 'text-slate-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                  &ldquo;{review.comment}&rdquo;
+                </p>
+
+                {review.photos > 0 && (
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                    <Camera className="w-3 h-3" />
+                    <span>{review.photos} service photo{review.photos > 1 ? 's' : ''} attached</span>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>

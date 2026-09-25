@@ -554,3 +554,59 @@ VALUES
     ('ac-amc', 'AC AMC Packages', 'Annual maintenance contracts providing scheduled preventive tune-ups and priority breakdown response.', 'Hassle-free year-round cooling security for residences and villas with scheduled seasonal services, emergency call-out coverage, and discount on replacement parts.', 'CalendarCheck', 1999.00, 7),
     ('commercial-ac', 'Commercial AC & HVAC', 'Specialized cooling maintenance for retail outlets, offices, clinics, server rooms, and commercial spaces.', 'Commercial cooling solutions tailored for uptime and air comfort. Covers Cassette ACs, VRV/VRF systems, ductable units, and commercial air distribution systems.', 'Building2', 2499.00, 8)
 ON CONFLICT (slug) DO NOTHING;
+
+-- ==============================================================================
+-- SEED PRICING MATRIX (service × AC type base prices with multipliers)
+-- Multipliers: Split=1.0, Window=0.9, Cassette=1.6, Ducted=2.0, Other=1.2
+-- ==============================================================================
+INSERT INTO public.pricing (service_id, ac_type, base_price, additional_unit_price, labour_charge, minimum_charge, is_active)
+VALUES
+-- AC Repair (base 499)
+((SELECT id FROM public.services WHERE slug = 'ac-repair'), 'Split',    499.00, 349.00, 199.00, 499.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-repair'), 'Window',   449.00, 299.00, 179.00, 449.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-repair'), 'Cassette', 799.00, 599.00, 299.00, 799.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-repair'), 'Ducted',   999.00, 799.00, 399.00, 999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-repair'), 'Other',    599.00, 449.00, 249.00, 599.00, TRUE),
+-- AC Service (base 399)
+((SELECT id FROM public.services WHERE slug = 'ac-service'), 'Split',    399.00, 249.00, 149.00, 399.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-service'), 'Window',   359.00, 219.00, 129.00, 359.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-service'), 'Cassette', 639.00, 449.00, 249.00, 639.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-service'), 'Ducted',   799.00, 579.00, 299.00, 799.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-service'), 'Other',    479.00, 329.00, 179.00, 479.00, TRUE),
+-- AC Deep Cleaning (base 699)
+((SELECT id FROM public.services WHERE slug = 'ac-deep-cleaning'), 'Split',    699.00, 499.00, 249.00,  699.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-deep-cleaning'), 'Window',   629.00, 449.00, 229.00,  629.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-deep-cleaning'), 'Cassette', 1119.00, 799.00, 399.00, 1119.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-deep-cleaning'), 'Ducted',   1399.00, 999.00, 499.00, 1399.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-deep-cleaning'), 'Other',    839.00, 599.00, 299.00,  839.00, TRUE),
+-- AC Installation (base 1199)
+((SELECT id FROM public.services WHERE slug = 'ac-installation'), 'Split',    1199.00,  899.00,  499.00, 1199.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-installation'), 'Window',   1079.00,  799.00,  449.00, 1079.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-installation'), 'Cassette', 1919.00, 1499.00,  749.00, 1919.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-installation'), 'Ducted',   2399.00, 1899.00,  949.00, 2399.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-installation'), 'Other',    1439.00, 1099.00,  549.00, 1439.00, TRUE),
+-- AC Uninstallation (base 649)
+((SELECT id FROM public.services WHERE slug = 'ac-uninstallation'), 'Split',    649.00,  499.00, 249.00,  649.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-uninstallation'), 'Window',   584.00,  449.00, 219.00,  584.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-uninstallation'), 'Cassette', 1039.00, 799.00,  399.00, 1039.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-uninstallation'), 'Ducted',   1299.00, 999.00,  499.00, 1299.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-uninstallation'), 'Other',    779.00,  599.00, 299.00,  779.00, TRUE),
+-- AC Gas Charging (base 1499)
+((SELECT id FROM public.services WHERE slug = 'ac-gas-charging'), 'Split',    1499.00,  999.00,  299.00, 1499.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-gas-charging'), 'Window',   1349.00,  899.00,  269.00, 1349.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-gas-charging'), 'Cassette', 2399.00, 1699.00,  599.00, 2399.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-gas-charging'), 'Ducted',   2999.00, 2099.00,  749.00, 2999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-gas-charging'), 'Other',    1799.00, 1249.00,  359.00, 1799.00, TRUE),
+-- AC AMC (base 1999)
+((SELECT id FROM public.services WHERE slug = 'ac-amc'), 'Split',    1999.00, 1499.00, 399.00, 1999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-amc'), 'Window',   1799.00, 1349.00, 359.00, 1799.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-amc'), 'Cassette', 3199.00, 2399.00, 749.00, 3199.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-amc'), 'Ducted',   3999.00, 2999.00, 899.00, 3999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'ac-amc'), 'Other',    2399.00, 1799.00, 479.00, 2399.00, TRUE),
+-- Commercial AC & HVAC (base 2499)
+((SELECT id FROM public.services WHERE slug = 'commercial-ac'), 'Split',    2499.00, 1899.00,  499.00,  2499.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'commercial-ac'), 'Window',   2249.00, 1699.00,  449.00,  2249.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'commercial-ac'), 'Cassette', 3999.00, 2999.00,  999.00,  3999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'commercial-ac'), 'Ducted',   4999.00, 3799.00, 1249.00,  4999.00, TRUE),
+((SELECT id FROM public.services WHERE slug = 'commercial-ac'), 'Other',    2999.00, 2249.00,  599.00,  2999.00, TRUE)
+ON CONFLICT (service_id, ac_type) DO NOTHING;

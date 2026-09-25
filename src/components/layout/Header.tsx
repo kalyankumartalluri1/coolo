@@ -1,15 +1,44 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Phone, Menu, X, Wind, ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Phone, Menu, X, Wind, ChevronDown, User, LogOut, LayoutDashboard, Wrench, UserCircle } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
 import { Button } from '@/components/ui/Button';
+import {
+  CooloSession,
+  getClientSession,
+  roleBadgeColor,
+  roleLabel,
+} from '@/lib/auth/session';
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [session, setSession] = useState<CooloSession | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    queueMicrotask(() => setSession(getClientSession()));
+  }, []);
+
+  async function handleSignOut() {
+    setSigningOut(true);
+    setUserMenuOpen(false);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+    } catch {
+      // ignore
+    }
+    setSession(null);
+    setSigningOut(false);
+    router.push('/');
+    router.refresh();
+  }
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
@@ -82,31 +111,124 @@ export const Header: React.FC = () => {
 
             <Link
               href="/areas"
-              className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
+              className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
             >
-              Service Areas
+              Cities
+            </Link>
+
+            <Link
+              href="/track"
+              className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
+            >
+              Track Booking
             </Link>
 
             <Link
               href="/about"
-              className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
+              className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
             >
               About
             </Link>
 
             <Link
               href="/contact"
-              className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
+              className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
             >
               Contact
             </Link>
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2.5">
+            {session ? (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  onBlur={() => setTimeout(() => setUserMenuOpen(false), 180)}
+                  className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-cyan-500 flex items-center justify-center text-white shadow-sm">
+                    <UserCircle className="w-5 h-5" />
+                  </div>
+                  <div className="text-left leading-tight pr-1">
+                    <div className="text-xs font-semibold text-slate-900">
+                      {session.name || 'Account'}
+                    </div>
+                    <div
+                      className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold border ${roleBadgeColor(session.role)}`}
+                    >
+                      {roleLabel(session.role)}
+                    </div>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${userMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 top-full pt-2 w-64 z-50" role="menu">
+                    <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2">
+                      <div className="px-3 py-2 border-b border-slate-100 mb-1">
+                        <div className="text-sm font-semibold text-slate-900">
+                          {session.name || 'Coolo User'}
+                        </div>
+                        <div className="text-[11px] text-slate-500 truncate">
+                          {session.email || ''}
+                        </div>
+                      </div>
+                      <Link
+                        href="/account"
+                        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:text-sky-600 rounded-lg transition-colors"
+                      >
+                        <User className="w-4 h-4" />
+                        My Account
+                      </Link>
+                      {(session.role === 'ADMIN' || session.role === 'SUPER_ADMIN') && (
+                        <Link
+                          href="/admin"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-700 rounded-lg transition-colors"
+                        >
+                          <LayoutDashboard className="w-4 h-4" />
+                          Admin Portal
+                        </Link>
+                      )}
+                      {session.role === 'TECHNICIAN' && (
+                        <Link
+                          href="/technician"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg transition-colors"
+                        >
+                          <Wrench className="w-4 h-4" />
+                          Technician Jobs
+                        </Link>
+                      )}
+                      <div className="pt-1 mt-1 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={handleSignOut}
+                          disabled={signingOut}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-lg transition-colors disabled:opacity-60"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          {signingOut ? 'Signing out…' : 'Sign Out'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="px-3 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
+
             <a
               href={`tel:${BRAND.contact.phone}`}
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-sky-600" />
               <span>{BRAND.contact.phoneDisplay}</span>
@@ -177,7 +299,14 @@ export const Header: React.FC = () => {
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg"
             >
-              Bangalore Service Areas
+              Cities We Serve
+            </Link>
+            <Link
+              href="/track"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg"
+            >
+              Track Booking Status
             </Link>
             <Link
               href="/about"
@@ -193,6 +322,64 @@ export const Header: React.FC = () => {
             >
               Contact Us
             </Link>
+            {session ? (
+              <>
+                <div className="px-3 py-2 border-y border-slate-100 my-1">
+                  <div className="text-sm font-semibold text-slate-900">
+                    {session.name || 'Coolo User'}
+                  </div>
+                  <div
+                    className={`inline-block mt-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold border ${roleBadgeColor(session.role)}`}
+                  >
+                    {roleLabel(session.role)}
+                  </div>
+                </div>
+                <Link
+                  href="/account"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg"
+                >
+                  My Account
+                </Link>
+                {(session.role === 'ADMIN' || session.role === 'SUPER_ADMIN') && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 text-base font-medium text-amber-700 hover:bg-amber-50 rounded-lg"
+                  >
+                    Admin Portal
+                  </Link>
+                )}
+                {session.role === 'TECHNICIAN' && (
+                  <Link
+                    href="/technician"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-3 py-2 text-base font-medium text-emerald-700 hover:bg-emerald-50 rounded-lg"
+                  >
+                    Technician Jobs
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    void handleSignOut();
+                  }}
+                  disabled={signingOut}
+                  className="w-full text-left block px-3 py-2 text-base font-semibold text-rose-600 hover:bg-rose-50 rounded-lg disabled:opacity-60"
+                >
+                  {signingOut ? 'Signing out…' : 'Sign Out →'}
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3 py-2 text-base font-semibold text-sky-600 hover:bg-sky-50 rounded-lg"
+              >
+                Sign In to Account →
+              </Link>
+            )}
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, Wrench, User, Phone, CheckCircle2, ArrowRight } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
-import { BANGALORE_AREAS, TIME_SLOTS } from '@/lib/constants/areas';
+import { SERVICE_CITIES, TIME_SLOTS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
 
 interface BookingSuccessModalProps {
@@ -99,7 +99,7 @@ export const QuickBookingWidget: React.FC = () => {
   const today = new Date().toISOString().split('T')[0];
 
   const [serviceSlug, setServiceSlug] = useState('ac-service');
-  const [areaName, setAreaName] = useState('Indiranagar');
+  const [areaName, setAreaName] = useState('Bangalore');
   const [preferredDate, setPreferredDate] = useState(today);
   const [preferredTimeSlot, setPreferredTimeSlot] = useState(TIME_SLOTS[0]);
   const [customerName, setCustomerName] = useState('');
@@ -241,7 +241,7 @@ export const QuickBookingWidget: React.FC = () => {
                 className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
               >
                 <MapPin className="w-3.5 h-3.5 text-sky-600" />
-                <span>Bangalore Area</span>
+                <span>City</span>
               </label>
               <select
                 id="area-select"
@@ -249,9 +249,9 @@ export const QuickBookingWidget: React.FC = () => {
                 onChange={(e) => setAreaName(e.target.value)}
                 className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm text-slate-800 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-colors"
               >
-                {BANGALORE_AREAS.map((a) => (
-                  <option key={a.id} value={a.areaName}>
-                    {a.areaName} ({a.pincode})
+                {SERVICE_CITIES.map((city) => (
+                  <option key={city.id} value={city.areaName}>
+                    {city.areaName} ({city.state})
                   </option>
                 ))}
               </select>

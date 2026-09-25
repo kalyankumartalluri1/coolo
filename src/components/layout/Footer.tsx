@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Wind, Phone, Mail, MapPin, ShieldCheck, Clock } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
-import { BANGALORE_AREAS } from '@/lib/constants/areas';
+import { SERVICE_CITIES } from '@/lib/constants/areas';
 
 export const Footer: React.FC = () => {
   return (
@@ -72,26 +72,26 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Bangalore Coverage Zones */}
+          {/* Cities Covered */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Bangalore Service Zones
+              Cities We Serve
             </h4>
             <ul className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
-              {BANGALORE_AREAS.slice(0, 10).map((area) => (
-                <li key={area.id}>
+              {SERVICE_CITIES.map((city) => (
+                <li key={city.id}>
                   <Link
                     href="/areas"
                     className="text-slate-400 hover:text-sky-400 transition-colors"
                   >
-                    {area.areaName}
+                    {city.areaName}
                   </Link>
                 </li>
               ))}
             </ul>
             <div className="pt-1">
               <Link href="/areas" className="text-xs font-semibold text-sky-400 hover:underline">
-                View all Bangalore areas →
+                View all cities →
               </Link>
             </div>
           </div>

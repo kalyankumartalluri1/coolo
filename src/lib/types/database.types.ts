@@ -70,6 +70,96 @@ export interface Database {
           updated_at?: string;
         };
       };
+      customers: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          preferred_language: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          preferred_language?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string | null;
+          preferred_language?: string | null;
+          notes?: string | null;
+          updated_at?: string;
+        };
+      };
+      technicians: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          employee_code: string;
+          skills: string[];
+          experience_years: number | null;
+          is_active: boolean;
+          current_status: string | null;
+          rating_avg: number | null;
+          rating_count: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          employee_code: string;
+          skills?: string[];
+          experience_years?: number | null;
+          is_active?: boolean;
+          current_status?: string | null;
+          rating_avg?: number | null;
+          rating_count?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string | null;
+          employee_code?: string;
+          skills?: string[];
+          experience_years?: number | null;
+          is_active?: boolean;
+          current_status?: string | null;
+          rating_avg?: number | null;
+          rating_count?: number;
+          updated_at?: string;
+        };
+      };
+      service_categories: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          description: string | null;
+          display_order: number;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          description?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          slug?: string;
+          name?: string;
+          description?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+        };
+      };
       services: {
         Row: {
           id: string;
@@ -140,6 +230,82 @@ export interface Database {
           area_name?: string;
           pincode?: string;
           is_active?: boolean;
+        };
+      };
+      pricing: {
+        Row: {
+          id: string;
+          service_id: string;
+          ac_type: ACType;
+          base_price: number;
+          additional_unit_price: number;
+          labour_charge: number;
+          minimum_charge: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          service_id: string;
+          ac_type: ACType;
+          base_price?: number;
+          additional_unit_price?: number;
+          labour_charge?: number;
+          minimum_charge?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          base_price?: number;
+          additional_unit_price?: number;
+          labour_charge?: number;
+          minimum_charge?: number;
+          is_active?: boolean;
+          updated_at?: string;
+        };
+      };
+      addresses: {
+        Row: {
+          id: string;
+          customer_id: string | null;
+          address_line1: string;
+          address_line2: string | null;
+          area: string;
+          city: string;
+          state: string;
+          pincode: string;
+          landmark: string | null;
+          is_default: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          customer_id?: string | null;
+          address_line1: string;
+          address_line2?: string | null;
+          area: string;
+          city?: string;
+          state?: string;
+          pincode: string;
+          landmark?: string | null;
+          is_default?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          customer_id?: string | null;
+          address_line1?: string;
+          address_line2?: string | null;
+          area?: string;
+          city?: string;
+          state?: string;
+          pincode?: string;
+          landmark?: string | null;
+          is_default?: boolean;
+          updated_at?: string;
         };
       };
       bookings: {
@@ -233,38 +399,292 @@ export interface Database {
           notes?: string | null;
         };
       };
-      pricing: {
+      technician_assignments: {
         Row: {
           id: string;
-          service_id: string;
-          ac_type: ACType;
-          base_price: number;
-          additional_unit_price: number;
-          labour_charge: number;
-          minimum_charge: number;
-          is_active: boolean;
+          booking_id: string;
+          technician_id: string;
+          status: AssignmentStatus;
+          assigned_at: string;
+          rejection_reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          technician_id: string;
+          status?: AssignmentStatus;
+          assigned_at?: string;
+          rejection_reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          status?: AssignmentStatus;
+          rejection_reason?: string | null;
+        };
+      };
+      service_estimates: {
+        Row: {
+          id: string;
+          booking_id: string;
+          technician_id: string;
+          subtotal: number;
+          tax_amount: number;
+          discount_amount: number;
+          total_amount: number;
+          status: EstimateStatus;
+          notes: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
-          service_id: string;
-          ac_type: ACType;
-          base_price?: number;
-          additional_unit_price?: number;
-          labour_charge?: number;
-          minimum_charge?: number;
-          is_active?: boolean;
+          booking_id: string;
+          technician_id: string;
+          subtotal?: number;
+          tax_amount?: number;
+          discount_amount?: number;
+          total_amount?: number;
+          status?: EstimateStatus;
+          notes?: string | null;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
-          base_price?: number;
-          additional_unit_price?: number;
-          labour_charge?: number;
-          minimum_charge?: number;
-          is_active?: boolean;
+          subtotal?: number;
+          tax_amount?: number;
+          discount_amount?: number;
+          total_amount?: number;
+          status?: EstimateStatus;
+          notes?: string | null;
           updated_at?: string;
+        };
+      };
+      estimate_items: {
+        Row: {
+          id: string;
+          estimate_id: string;
+          item_type: string;
+          description: string;
+          quantity: number;
+          unit_price: number;
+          total_price: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          estimate_id: string;
+          item_type: string;
+          description: string;
+          quantity?: number;
+          unit_price: number;
+          total_price: number;
+          created_at?: string;
+        };
+        Update: {
+          item_type?: string;
+          description?: string;
+          quantity?: number;
+          unit_price?: number;
+          total_price?: number;
+        };
+      };
+      service_records: {
+        Row: {
+          id: string;
+          booking_id: string;
+          technician_id: string;
+          diagnosis_notes: string | null;
+          work_performed: string;
+          before_photos: string[];
+          after_photos: string[];
+          final_amount: number | null;
+          completed_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          technician_id: string;
+          diagnosis_notes?: string | null;
+          work_performed: string;
+          before_photos?: string[];
+          after_photos?: string[];
+          final_amount?: number | null;
+          completed_at?: string;
+          created_at?: string;
+        };
+        Update: {
+          diagnosis_notes?: string | null;
+          work_performed?: string;
+          before_photos?: string[];
+          after_photos?: string[];
+          final_amount?: number | null;
+          completed_at?: string;
+        };
+      };
+      parts: {
+        Row: {
+          id: string;
+          part_number: string;
+          name: string;
+          category: string | null;
+          unit_cost: number;
+          selling_price: number;
+          in_stock: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          part_number: string;
+          name: string;
+          category?: string | null;
+          unit_cost: number;
+          selling_price: number;
+          in_stock?: number;
+          created_at?: string;
+        };
+        Update: {
+          part_number?: string;
+          name?: string;
+          category?: string | null;
+          unit_cost?: number;
+          selling_price?: number;
+          in_stock?: number;
+        };
+      };
+      service_parts: {
+        Row: {
+          id: string;
+          service_record_id: string;
+          part_id: string;
+          quantity: number;
+          unit_price: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          service_record_id: string;
+          part_id: string;
+          quantity?: number;
+          unit_price: number;
+          created_at?: string;
+        };
+        Update: {
+          quantity?: number;
+          unit_price?: number;
+        };
+      };
+      payments: {
+        Row: {
+          id: string;
+          booking_id: string;
+          amount: number;
+          payment_method: PaymentMethod;
+          status: PaymentStatus;
+          transaction_reference: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          amount: number;
+          payment_method?: PaymentMethod;
+          status?: PaymentStatus;
+          transaction_reference?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          amount?: number;
+          payment_method?: PaymentMethod;
+          status?: PaymentStatus;
+          transaction_reference?: string | null;
+          notes?: string | null;
+          updated_at?: string;
+        };
+      };
+      reviews: {
+        Row: {
+          id: string;
+          booking_id: string;
+          customer_id: string | null;
+          rating: number;
+          comment: string | null;
+          photo_urls: string[];
+          is_moderated: boolean;
+          is_published: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          customer_id?: string | null;
+          rating: number;
+          comment?: string | null;
+          photo_urls?: string[];
+          is_moderated?: boolean;
+          is_published?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          rating?: number;
+          comment?: string | null;
+          photo_urls?: string[];
+          is_moderated?: boolean;
+          is_published?: boolean;
+        };
+      };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          type: string;
+          title: string;
+          message: string;
+          link: string | null;
+          is_read: boolean;
+          channel: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          type: string;
+          title: string;
+          message: string;
+          link?: string | null;
+          is_read?: boolean;
+          channel?: string;
+          created_at?: string;
+        };
+        Update: {
+          is_read?: boolean;
+        };
+      };
+      admin_notes: {
+        Row: {
+          id: string;
+          booking_id: string;
+          author_id: string | null;
+          note: string;
+          is_internal_only: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          author_id?: string | null;
+          note: string;
+          is_internal_only?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          note?: string;
+          is_internal_only?: boolean;
         };
       };
       contact_requests: {

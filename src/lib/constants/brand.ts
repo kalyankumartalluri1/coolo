@@ -1,3 +1,5 @@
+import { DEFAULT_SITE_CONFIG } from '@/lib/config/site-config';
+
 export const BRAND = {
   name: 'COOLO',
   legalName: 'Coolo Air & Cooling Solutions',
@@ -9,13 +11,13 @@ export const BRAND = {
   state: 'Karnataka',
   country: 'India',
   contact: {
-    phone: process.env.NEXT_PUBLIC_BUSINESS_PHONE || '+918045678900',
-    phoneDisplay: process.env.NEXT_PUBLIC_BUSINESS_PHONE_DISPLAY || '+91 80 4567 8900',
-    whatsapp: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || '+918045678900',
-    email: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || 'hello@coolo.in',
-    supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@coolo.in',
-    address: 'Bangalore, Karnataka 560038, India',
-    workingHours: 'Mon - Sun: 8:00 AM – 9:00 PM',
+    phone: process.env.NEXT_PUBLIC_BUSINESS_PHONE || DEFAULT_SITE_CONFIG.contact.phone,
+    phoneDisplay: process.env.NEXT_PUBLIC_BUSINESS_PHONE_DISPLAY || DEFAULT_SITE_CONFIG.contact.phoneDisplay,
+    whatsapp: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || DEFAULT_SITE_CONFIG.contact.whatsapp,
+    email: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || DEFAULT_SITE_CONFIG.contact.email,
+    supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || DEFAULT_SITE_CONFIG.contact.supportEmail,
+    address: DEFAULT_SITE_CONFIG.contact.address,
+    workingHours: DEFAULT_SITE_CONFIG.contact.workingHours,
   },
   trustPillars: [
     {

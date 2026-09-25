@@ -14,17 +14,16 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://coolo.in'),
   title: {
-    default: 'COOLO — Air & Cooling Solutions | AC Services in Bangalore',
+    default: 'COOLO — Air & Cooling Solutions | AC Services Across Major Indian Cities',
     template: '%s | COOLO Air & Cooling Solutions',
   },
   description:
-    'Reliable AC repair, servicing, deep cleaning, installation and cooling solutions in Bangalore. Verified technicians, transparent pricing, and digital service records.',
+    'Reliable AC repair, servicing, deep cleaning, installation and cooling solutions across Bangalore, Hyderabad, Delhi, Guntur, Pune, Mumbai, Chennai and Kolkata.',
   keywords: [
     'AC service Bangalore',
-    'AC repair Bangalore',
-    'AC cleaning Bangalore',
-    'AC installation Bangalore',
-    'AC gas charging Bangalore',
+    'AC repair Hyderabad',
+    'AC service Delhi',
+    'AC service Kolkata',
     'Coolo',
     'Air & Cooling Solutions',
   ],
@@ -37,13 +36,13 @@ export const metadata: Metadata = {
     siteName: 'COOLO',
     title: 'COOLO — Air & Cooling Solutions at Your Doorstep',
     description:
-      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians in Bangalore.',
+      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians across major Indian cities.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'COOLO — Air & Cooling Solutions',
     description:
-      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians in Bangalore.',
+      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians across major Indian cities.',
   },
   robots: {
     index: true,

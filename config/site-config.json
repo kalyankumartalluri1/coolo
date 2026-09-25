@@ -1,0 +1,77 @@
+{
+  "contact": {
+    "phone": "+919900819475",
+    "phoneDisplay": "+91 99008 19475",
+    "whatsapp": "+919900819475",
+    "email": "hello@coolo.in",
+    "supportEmail": "support@coolo.in",
+    "address": "Bangalore, Karnataka 560038, India",
+    "workingHours": "Mon - Sun: 8:00 AM – 9:00 PM"
+  },
+  "cities": [
+    {
+      "id": "city-bangalore",
+      "areaName": "Bangalore",
+      "pincode": "560001",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "isActive": true
+    },
+    {
+      "id": "city-hyderabad",
+      "areaName": "Hyderabad",
+      "pincode": "500001",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "isActive": true
+    },
+    {
+      "id": "city-delhi",
+      "areaName": "Delhi",
+      "pincode": "110001",
+      "city": "Delhi",
+      "state": "Delhi",
+      "isActive": true
+    },
+    {
+      "id": "city-guntur",
+      "areaName": "Guntur",
+      "pincode": "522001",
+      "city": "Guntur",
+      "state": "Andhra Pradesh",
+      "isActive": true
+    },
+    {
+      "id": "city-pune",
+      "areaName": "Pune",
+      "pincode": "411001",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "isActive": true
+    },
+    {
+      "id": "city-mumbai",
+      "areaName": "Mumbai",
+      "pincode": "400001",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "isActive": true
+    },
+    {
+      "id": "city-chennai",
+      "areaName": "Chennai",
+      "pincode": "600001",
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "isActive": true
+    },
+    {
+      "id": "city-kolkata",
+      "areaName": "Kolkata",
+      "pincode": "700001",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "isActive": true
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MapPin, ArrowRight } from 'lucide-react';
-import { BANGALORE_AREAS } from '@/lib/constants/areas';
+import { SERVICE_CITIES } from '@/lib/constants/areas';
 
 export const ServiceAreasPreview: React.FC = () => {
   return (
@@ -13,10 +13,10 @@ export const ServiceAreasPreview: React.FC = () => {
               Coverage Network
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-              Serving Bangalore Neighbourhoods
+              Cities We Cover
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2">
-              Our technicians are stationed locally across East, South, North and Central Bangalore for prompt dispatch.
+              We keep service support city-wise instead of splitting each city into sub-areas, with one central contact for coordination.
             </p>
           </div>
 
@@ -24,24 +24,24 @@ export const ServiceAreasPreview: React.FC = () => {
             href="/areas"
             className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-700 transition-colors"
           >
-            <span>View all covered areas</span>
+            <span>View all cities</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {BANGALORE_AREAS.map((area) => (
+          {SERVICE_CITIES.map((city) => (
             <Link
-              key={area.id}
-              href={`/book-service?area=${encodeURIComponent(area.areaName)}`}
+              key={city.id}
+              href={`/book-service?area=${encodeURIComponent(city.areaName)}`}
               className="p-3.5 rounded-xl border border-slate-200/80 hover:border-sky-300 hover:bg-sky-50/40 transition-all group flex flex-col justify-between"
             >
               <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-800 group-hover:text-sky-600">
                 <MapPin className="w-3.5 h-3.5 text-sky-500 shrink-0" />
-                <span className="truncate">{area.areaName}</span>
+                <span className="truncate">{city.areaName}</span>
               </div>
               <span className="text-[10px] text-slate-400 mt-2 block font-mono">
-                PIN {area.pincode}
+                {city.state}
               </span>
             </Link>
           ))}
@@ -49,13 +49,13 @@ export const ServiceAreasPreview: React.FC = () => {
 
         <div className="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-600 gap-3">
           <span>
-            Don&apos;t see your area listed? We are continuously expanding coverage across Greater Bangalore.
+            Need service in a city not listed? Call our centralized support desk for the fastest coordination.
           </span>
           <Link
             href="/contact"
             className="font-semibold text-sky-600 hover:underline shrink-0"
           >
-            Inquire for your locality →
+            Talk to support →
           </Link>
         </div>
       </div>
