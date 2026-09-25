@@ -10,14 +10,14 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
-import { BANGALORE_AREAS, TIME_SLOTS, AC_TYPES, AC_BRANDS } from '@/lib/constants/areas';
+import { ACTIVE_SERVICE_AREAS, DEFAULT_SERVICE_AREA, TIME_SLOTS, AC_TYPES, AC_BRANDS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 
 function BookingFlowContent() {
   const searchParams = useSearchParams();
   const initialService = searchParams.get('service') || 'ac-service';
-  const initialArea = searchParams.get('area') || 'Indiranagar';
+  const initialArea = searchParams.get('area') || DEFAULT_SERVICE_AREA;
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -425,12 +425,12 @@ function BookingFlowContent() {
                     value={selectedArea}
                     onChange={(e) => {
                       setSelectedArea(e.target.value);
-                      const matched = BANGALORE_AREAS.find((a) => a.areaName === e.target.value);
+                      const matched = ACTIVE_SERVICE_AREAS.find((a) => a.areaName === e.target.value);
                       if (matched) setPincode(matched.pincode);
                     }}
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm"
                   >
-                    {BANGALORE_AREAS.map((a) => (
+                    {ACTIVE_SERVICE_AREAS.map((a) => (
                       <option key={a.id} value={a.areaName}>
                         {a.areaName}
                       </option>

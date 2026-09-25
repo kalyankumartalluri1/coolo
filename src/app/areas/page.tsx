@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { MapPin, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
-import { BANGALORE_AREAS } from '@/lib/constants/areas';
+import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 import { CTASection } from '@/components/home/CTASection';
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default function AreasPage() {
 
         {/* Areas Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14">
-          {BANGALORE_AREAS.map((area) => (
+          {ACTIVE_SERVICE_AREAS.map((area) => (
             <div
               key={area.id}
               className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between"

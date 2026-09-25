@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Wind, Phone, Mail, MapPin, ShieldCheck, Clock } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
-import { BANGALORE_AREAS } from '@/lib/constants/areas';
+import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 
 export const Footer: React.FC = () => {
   return (
@@ -78,7 +78,7 @@ export const Footer: React.FC = () => {
               Bangalore Service Zones
             </h4>
             <ul className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
-              {BANGALORE_AREAS.slice(0, 10).map((area) => (
+              {ACTIVE_SERVICE_AREAS.slice(0, 10).map((area) => (
                 <li key={area.id}>
                   <Link
                     href="/areas"

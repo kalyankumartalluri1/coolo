@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { MapPin, ArrowRight } from 'lucide-react';
-import { BANGALORE_AREAS } from '@/lib/constants/areas';
+import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 
 export const ServiceAreasPreview: React.FC = () => {
   return (
@@ -30,7 +30,7 @@ export const ServiceAreasPreview: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {BANGALORE_AREAS.map((area) => (
+          {ACTIVE_SERVICE_AREAS.map((area) => (
             <Link
               key={area.id}
               href={`/book-service?area=${encodeURIComponent(area.areaName)}`}
