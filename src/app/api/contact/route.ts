@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { isSupabaseConfigured } from '@/lib/supabase/env';
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, 'Name is required'),
@@ -27,11 +28,7 @@ export async function POST(request: NextRequest) {
     const { name, mobile, email, message } = result.data;
 
     // Check if Supabase is connected
-    const hasValidSupabase =
-      process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('mock-coolo-dev') &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY &&
-      !process.env.SUPABASE_SERVICE_ROLE_KEY.includes('dummy');
+    const hasValidSupabase = isSupabaseConfigured();
 
     if (hasValidSupabase) {
       try {

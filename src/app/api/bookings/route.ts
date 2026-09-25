@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { quickBookingSchema } from '@/lib/validations/booking.schema';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { isSupabaseConfigured } from '@/lib/supabase/env';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,11 +49,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Attempt to store in Supabase if configured, otherwise provide consistent response
-    const hasValidSupabase =
-      process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('mock-coolo-dev') &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY &&
-      !process.env.SUPABASE_SERVICE_ROLE_KEY.includes('dummy');
+    const hasValidSupabase = isSupabaseConfigured();
 
     if (hasValidSupabase) {
       try {

@@ -1,9 +1,8 @@
 import { createBrowserClient } from '@supabase/ssr';
 import { Database } from '@/lib/types/database.types';
+import { getSupabaseEnv } from '@/lib/supabase/env';
 
 export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock-coolo-dev.supabase.co';
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy-anon-key';
-
+  const { supabaseUrl, supabaseAnonKey } = getSupabaseEnv();
   return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
 }
