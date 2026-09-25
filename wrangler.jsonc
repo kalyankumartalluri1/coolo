@@ -1,0 +1,40 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "coolo-cloudflare-worker",
+  "compatibility_date": "2025-09-25",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "coolo-cloudflare-worker"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "coolo-cloudflare-worker-opennext-cache"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "vars": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://your-project-id.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "your-anon-key",
+    "NEXT_PUBLIC_SITE_URL": "https://coolo.in",
+    "NEXT_PUBLIC_SITE_NAME": "COOLO",
+    "NEXT_PUBLIC_SITE_TAGLINE": "Air & Cooling Solutions",
+    "NEXT_PUBLIC_BUSINESS_PHONE": "+919900819475",
+    "NEXT_PUBLIC_BUSINESS_PHONE_DISPLAY": "+91 99008 19475",
+    "NEXT_PUBLIC_BUSINESS_WHATSAPP": "+919900819475",
+    "NEXT_PUBLIC_BUSINESS_EMAIL": "hello@coolo.in",
+    "NEXT_PUBLIC_SUPPORT_EMAIL": "support@coolo.in",
+    "NEXT_PUBLIC_DEFAULT_CITY": "Bangalore",
+    "NEXT_PUBLIC_DEFAULT_STATE": "Karnataka"
+  }
+}
