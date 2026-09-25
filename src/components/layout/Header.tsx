@@ -177,7 +177,7 @@ export const Header: React.FC = () => {
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg"
             >
-              Bangalore Service Areas
+              Service Cities
             </Link>
             <Link
               href="/about"

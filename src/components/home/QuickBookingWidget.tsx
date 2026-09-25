@@ -57,8 +57,8 @@ const BookingSuccessModal: React.FC<BookingSuccessModalProps> = ({
             <span className="font-medium text-slate-900">{bookingData.serviceName}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-slate-500">Area</span>
-            <span className="font-medium text-slate-900">{bookingData.area}, Bangalore</span>
+            <span className="text-slate-500">City</span>
+            <span className="font-medium text-slate-900">{bookingData.area}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-slate-500">Date & Slot</span>
@@ -241,7 +241,7 @@ export const QuickBookingWidget: React.FC = () => {
                 className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
               >
                 <MapPin className="w-3.5 h-3.5 text-sky-600" />
-                <span>Bangalore Area</span>
+                <span>Service City</span>
               </label>
               <select
                 id="area-select"
@@ -251,7 +251,7 @@ export const QuickBookingWidget: React.FC = () => {
               >
                 {ACTIVE_SERVICE_AREAS.map((a) => (
                   <option key={a.id} value={a.areaName}>
-                    {a.areaName} ({a.pincode})
+                    {a.areaName}
                   </option>
                 ))}
               </select>

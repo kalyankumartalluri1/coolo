@@ -72,10 +72,10 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Bangalore Coverage Zones */}
+          {/* Service Cities */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Bangalore Service Zones
+              Service Cities
             </h4>
             <ul className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs">
               {ACTIVE_SERVICE_AREAS.slice(0, 10).map((area) => (
@@ -91,7 +91,7 @@ export const Footer: React.FC = () => {
             </ul>
             <div className="pt-1">
               <Link href="/areas" className="text-xs font-semibold text-sky-400 hover:underline">
-                View all Bangalore areas →
+                View all service cities →
               </Link>
             </div>
           </div>

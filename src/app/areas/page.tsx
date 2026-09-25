@@ -6,9 +6,9 @@ import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 import { CTASection } from '@/components/home/CTASection';
 
 export const metadata: Metadata = {
-  title: 'AC Service Areas in Bangalore | COOLO Coverage',
+  title: 'Service Cities | COOLO Coverage',
   description:
-    'Coolo covers all primary residential and commercial areas in Bangalore including Whitefield, Indiranagar, HSR Layout, Koramangala, Marathahalli, and beyond.',
+    'Coolo provides AC repair, installation and maintenance services across major Indian cities including Bangalore, Pune, Hyderabad, Chennai, Delhi NCR, and more.',
 };
 
 export default function AreasPage() {
@@ -18,13 +18,13 @@ export default function AreasPage() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200/60">
-            Local Service Network
+            City Service Network
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mt-3">
-            AC & Cooling Service Areas in Bangalore
+            Cities We Serve
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-3">
-            Our certified cooling technicians are stationed across Bangalore zones to provide reliable 2-hour arrival windows.
+            Our certified cooling technicians are stationed across key metro cities to provide reliable service windows and transparent pricing.
           </p>
         </div>
 
@@ -45,20 +45,20 @@ export default function AreasPage() {
                       {area.areaName}
                     </h3>
                   </div>
-                  <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
-                    {area.pincode}
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                    {area.state}
                   </span>
                 </div>
 
                 <p className="text-xs text-slate-500 mb-4">
-                  Full residential and commercial AC repair, deep cleaning, foam wash, gas charging and installation available.
+                  Full residential and commercial AC repair, deep cleaning, gas charging and installation available.
                 </p>
               </div>
 
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                 <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Active Service Zone
+                  Active Service City
                 </span>
 
                 <Link
@@ -93,7 +93,7 @@ export default function AreasPage() {
                 Verified Local Specialists
               </h4>
               <p className="text-xs text-slate-600 mt-1">
-                Background-checked technicians who know Bangalore neighborhoods and power conditions.
+                Background-checked technicians who know city-specific conditions and service requirements.
               </p>
             </div>
           </div>
@@ -101,10 +101,10 @@ export default function AreasPage() {
             <MapPin className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
             <div>
               <h4 className="text-sm font-bold text-slate-900">
-                Expanding Greater Bangalore
+                Expanding Across Cities
               </h4>
               <p className="text-xs text-slate-600 mt-1">
-                Adding new tech hubs, apartments, and commercial corridors each month.
+                Adding new metro and growth corridors every month as we expand service coverage.
               </p>
             </div>
           </div>

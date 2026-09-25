@@ -15,7 +15,7 @@ export interface ServiceItem {
 export interface ServiceAreaItem {
   id: string;
   areaName: string;
-  pincode: string;
+  pincode?: string;
   city: string;
   state: string;
   isActive: boolean;

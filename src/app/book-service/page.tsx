@@ -150,7 +150,7 @@ function BookingFlowContent() {
           Schedule Your AC Service Visit
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 mt-1">
-          Zero upfront advance • Pay after service • Certified Bangalore technicians
+          Zero upfront advance • Pay after service • Certified local technicians
         </p>
       </div>
 
@@ -335,7 +335,7 @@ function BookingFlowContent() {
                 Step 3: Service Location & Contact
               </h2>
               <p className="text-xs text-slate-500 mt-1">
-                Enter your Bangalore address and phone number for dispatch verification.
+                Enter your service address and phone number for dispatch verification.
               </p>
             </div>
 
@@ -419,14 +419,14 @@ function BookingFlowContent() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Bangalore Area *
+                    Service City *
                   </label>
                   <select
                     value={selectedArea}
                     onChange={(e) => {
                       setSelectedArea(e.target.value);
                       const matched = ACTIVE_SERVICE_AREAS.find((a) => a.areaName === e.target.value);
-                      if (matched) setPincode(matched.pincode);
+                      if (matched && matched.pincode) setPincode(matched.pincode);
                     }}
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm"
                   >
@@ -567,7 +567,7 @@ function BookingFlowContent() {
               <div className="flex justify-between items-start pb-3 border-b border-slate-200">
                 <span className="font-semibold text-slate-500">Address</span>
                 <span className="text-slate-800 text-right max-w-xs">
-                  {addressLine1}, {selectedArea}, Bangalore - {pincode}
+                  {addressLine1}, {selectedArea} - {pincode || 'PIN not provided'}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -627,7 +627,7 @@ function BookingFlowContent() {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Location</span>
-                <span className="font-semibold text-slate-800">{selectedArea}, Bangalore</span>
+                <span className="font-semibold text-slate-800">{selectedArea}</span>
               </div>
             </div>
 

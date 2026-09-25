@@ -13,10 +13,10 @@ export const ServiceAreasPreview: React.FC = () => {
               Coverage Network
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-              Serving Bangalore Neighbourhoods
+              Cities We Serve
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2">
-              Our technicians are stationed locally across East, South, North and Central Bangalore for prompt dispatch.
+              Fast-response AC servicing and maintenance across key metro cities with local technician coverage.
             </p>
           </div>
 
@@ -24,7 +24,7 @@ export const ServiceAreasPreview: React.FC = () => {
             href="/areas"
             className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-700 transition-colors"
           >
-            <span>View all covered areas</span>
+            <span>View all service cities</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -40,8 +40,8 @@ export const ServiceAreasPreview: React.FC = () => {
                 <MapPin className="w-3.5 h-3.5 text-sky-500 shrink-0" />
                 <span className="truncate">{area.areaName}</span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-2 block font-mono">
-                PIN {area.pincode}
+              <span className="text-[10px] text-slate-400 mt-2 block">
+                {area.state}
               </span>
             </Link>
           ))}
@@ -49,13 +49,13 @@ export const ServiceAreasPreview: React.FC = () => {
 
         <div className="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-600 gap-3">
           <span>
-            Don&apos;t see your area listed? We are continuously expanding coverage across Greater Bangalore.
+            Don&apos;t see your city listed? We are continuously expanding coverage to new metro and tier-2 service regions.
           </span>
           <Link
             href="/contact"
             className="font-semibold text-sky-600 hover:underline shrink-0"
           >
-            Inquire for your locality →
+            Inquire for your city →
           </Link>
         </div>
       </div>
