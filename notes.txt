@@ -1,0 +1,5 @@
+Invoke-RestMethod `
+  -Uri "https://api.cloudflare.com/client/v4/workers/builds/deploy_hooks/2d2cb145-3d8c-42a8-b17f-74d8739fedb0" `
+  -Method POST
+
+  
