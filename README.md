@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Cloudflare production deployment
+
+`wrangler.jsonc` contains the production Supabase URL and public anon key. Keep
+`SUPABASE_SERVICE_ROLE_KEY` out of this file; configure it as a Cloudflare
+Worker secret instead:
+
+1. Authenticate with `pnpm exec wrangler login`.
+2. Rotate the Supabase service-role key if it was previously committed, then
+	set the replacement with `pnpm exec wrangler secret put SUPABASE_SERVICE_ROLE_KEY --name coolo`.
+3. Build and deploy with `pnpm run deploy:cloudflare`.
+
+The business phone is also set in `wrangler.jsonc`; its fallback in
+`src/lib/constants/brand.ts` is kept in sync. Since `NEXT_PUBLIC_*` values are
+embedded during the Next.js build, rebuild and redeploy after changing them.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

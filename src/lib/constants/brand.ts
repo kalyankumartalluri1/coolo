@@ -9,9 +9,9 @@ export const BRAND = {
   state: 'Karnataka',
   country: 'India',
   contact: {
-    phone: process.env.NEXT_PUBLIC_BUSINESS_PHONE || '+918045678900',
-    phoneDisplay: process.env.NEXT_PUBLIC_BUSINESS_PHONE_DISPLAY || '+91 80 4567 8900',
-    whatsapp: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || '+918045678900',
+    phone: process.env.NEXT_PUBLIC_BUSINESS_PHONE || '+919900819475',
+    phoneDisplay: process.env.NEXT_PUBLIC_BUSINESS_PHONE_DISPLAY || '+91 99008 19475',
+    whatsapp: process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || '+919900819475',
     email: process.env.NEXT_PUBLIC_BUSINESS_EMAIL || 'hello@coolo.in',
     supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@coolo.in',
     address: 'Bangalore, Karnataka 560038, India',

@@ -27,7 +27,6 @@
 
     "NEXT_PUBLIC_SUPABASE_URL": "https://asopbbxrmhkbagcwloyf.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzb3BiYnhybWhrYmFnY3dsb3lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzUxOTIsImV4cCI6MjEwNTkxMTE5Mn0.DQEk5DsqBxsotk2atbIMiwQ7Cvtmfkcx02NSAGntrvE",
-    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzb3BiYnhybWhrYmFnY3dsb3lmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDMzNTE5MiwiZXhwIjoyMTA1OTExMTkyfQ.cYGkZ_5aXHGrBF0XRSpCiqNmofIlqjKYtq2ialLFghA",
     "NEXT_PUBLIC_SITE_URL": "https://coolo.in",
     "NEXT_PUBLIC_SITE_NAME": "COOLO",
     "NEXT_PUBLIC_SITE_TAGLINE": "Air & Cooling Solutions",
