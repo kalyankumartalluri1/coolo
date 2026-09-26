@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { quickBookingSchema } from '@/lib/validations/booking.schema';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient as createSessionClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/env';
 
 export async function POST(request: NextRequest) {
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
 
     const bookingPayload = {
       booking_number: generatedBookingNumber,
+      customer_id: null as string | null,
       ac_type: 'Split' as const,
       status: 'REQUESTED' as const,
       scheduled_date: preferredDate,
@@ -53,6 +55,17 @@ export async function POST(request: NextRequest) {
 
     if (hasValidSupabase) {
       try {
+        const sessionClient = await createSessionClient();
+        const { data: { user } } = await sessionClient.auth.getUser();
+        if (user) {
+          const { data: customer } = await sessionClient
+            .from('customers')
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          bookingPayload.customer_id = customer?.id ?? null;
+        }
+
         const supabase = createAdminClient();
         const { data, error } = await supabase
           .from('bookings')

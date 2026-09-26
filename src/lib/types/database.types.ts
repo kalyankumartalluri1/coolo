@@ -69,6 +69,95 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
+      };
+      customers: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          preferred_language: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          preferred_language?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          preferred_language?: string | null;
+          notes?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      technicians: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          employee_code: string;
+          skills: string[] | null;
+          experience_years: number | null;
+          is_active: boolean;
+          current_status: string | null;
+          rating_avg: number | null;
+          rating_count: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          employee_code: string;
+          skills?: string[] | null;
+          experience_years?: number | null;
+          is_active?: boolean;
+          current_status?: string | null;
+          rating_avg?: number | null;
+          rating_count?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          employee_code?: string;
+          skills?: string[] | null;
+          experience_years?: number | null;
+          is_active?: boolean;
+          current_status?: string | null;
+          rating_avg?: number | null;
+          rating_count?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      technician_assignments: {
+        Row: {
+          id: string;
+          booking_id: string;
+          technician_id: string;
+          status: AssignmentStatus;
+          assigned_at: string;
+          rejection_reason: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          technician_id: string;
+          status?: AssignmentStatus;
+          assigned_at?: string;
+          rejection_reason?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          status?: AssignmentStatus;
+          rejection_reason?: string | null;
+        };
+        Relationships: [];
       };
       services: {
         Row: {
@@ -114,6 +203,7 @@ export interface Database {
           display_order?: number;
           updated_at?: string;
         };
+        Relationships: [];
       };
       service_areas: {
         Row: {
@@ -141,6 +231,7 @@ export interface Database {
           pincode?: string;
           is_active?: boolean;
         };
+        Relationships: [];
       };
       bookings: {
         Row: {
@@ -209,6 +300,7 @@ export interface Database {
           cancellation_reason?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       booking_status_history: {
         Row: {
@@ -232,6 +324,7 @@ export interface Database {
         Update: {
           notes?: string | null;
         };
+        Relationships: [];
       };
       pricing: {
         Row: {
@@ -266,6 +359,7 @@ export interface Database {
           is_active?: boolean;
           updated_at?: string;
         };
+        Relationships: [];
       };
       contact_requests: {
         Row: {
@@ -286,6 +380,10 @@ export interface Database {
           status?: string;
           created_at?: string;
         };
+        Update: {
+          status?: string;
+        };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

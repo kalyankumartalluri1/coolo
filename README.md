@@ -35,6 +35,31 @@ The business phone is also set in `wrangler.jsonc`; its fallback in
 `src/lib/constants/brand.ts` is kept in sync. Since `NEXT_PUBLIC_*` values are
 embedded during the Next.js build, rebuild and redeploy after changing them.
 
+## Role-based portal setup
+
+The portal is available at `/portal/login`. Customer accounts can self-register;
+technician and administrator access must be granted by a super administrator.
+Before deploying the portal:
+
+1. Apply `supabase/migrations/20260926000001_portal_roles_and_security.sql` to
+	the production Supabase project (after the initial schema migration).
+2. Register the first trusted operator as a customer, then promote that account
+	to `SUPER_ADMIN` from the Supabase SQL Editor:
+
+	```sql
+	UPDATE public.profiles
+	SET role = 'SUPER_ADMIN'
+	WHERE email = 'trusted-operator@example.com';
+	```
+
+3. Deploy with `pnpm run deploy:cloudflare`. Keep the service-role key configured
+	only as a Cloudflare Worker secret; the portal uses it only in server-side,
+	super-admin-authorized operations.
+
+Customers can track/cancel eligible bookings; technicians can update assigned
+jobs; admins can manage booking statuses, assignments, and customer enquiries;
+super admins can also manage account roles.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

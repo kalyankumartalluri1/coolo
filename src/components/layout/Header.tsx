@@ -104,6 +104,12 @@ export const Header: React.FC = () => {
 
           {/* Desktop CTAs */}
           <div className="hidden sm:flex items-center gap-3">
+            <Link
+              href="/portal/login"
+              className="px-2 py-2 text-xs font-semibold text-slate-600 transition-colors hover:text-sky-700"
+            >
+              Sign in
+            </Link>
             <a
               href={`tel:${BRAND.contact.phone}`}
               className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
@@ -192,6 +198,13 @@ export const Header: React.FC = () => {
               className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg"
             >
               Contact Us
+            </Link>
+            <Link
+              href="/portal/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 text-base font-semibold text-sky-700 hover:bg-sky-50 rounded-lg"
+            >
+              Sign in / Create account
             </Link>
           </div>
 
