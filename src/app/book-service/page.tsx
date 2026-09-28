@@ -39,7 +39,7 @@ function BookingFlowContent() {
   const [addressLine1, setAddressLine1] = useState('');
   const [addressLine2, setAddressLine2] = useState('');
   const [selectedArea, setSelectedArea] = useState(initialArea);
-  const [pincode, setPincode] = useState('560038');
+  const [pincode, setPincode] = useState('');
   const [landmark, setLandmark] = useState('');
 
   const [preferredDate, setPreferredDate] = useState(today);
@@ -76,6 +76,10 @@ function BookingFlowContent() {
         setErrorMessage('Please enter your house/flat number and street address.');
         return;
       }
+      if (!/^[1-9][0-9]{5}$/.test(pincode.trim())) {
+        setErrorMessage('Please enter a valid 6-digit PIN code.');
+        return;
+      }
       setCurrentStep(4);
     } else if (currentStep === 4) {
       if (!preferredDate) {
@@ -108,6 +112,15 @@ function BookingFlowContent() {
           preferredTimeSlot,
           customerName: customerName.trim(),
           customerMobile: customerMobile.replace(/[\s-]/g, ''),
+          acType,
+          acBrand,
+          acAge,
+          problemDescription,
+          customerEmail: customerEmail.trim(),
+          addressLine1: addressLine1.trim(),
+          addressLine2: addressLine2.trim(),
+          pincode,
+          landmark: landmark.trim(),
         }),
       });
 
@@ -117,7 +130,7 @@ function BookingFlowContent() {
         throw new Error(data.error || 'Failed to submit booking');
       }
 
-      setConfirmedBookingId(data.bookingNumber || `COOLO-${new Date().getFullYear()}-000001`);
+      setConfirmedBookingId(data.bookingNumber);
       setCurrentStep(6);
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -426,7 +439,7 @@ function BookingFlowContent() {
                     onChange={(e) => {
                       setSelectedArea(e.target.value);
                       const matched = ACTIVE_SERVICE_AREAS.find((a) => a.areaName === e.target.value);
-                      if (matched && matched.pincode) setPincode(matched.pincode);
+                      setPincode(matched?.pincode ?? '');
                     }}
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm"
                   >
@@ -447,6 +460,7 @@ function BookingFlowContent() {
                     maxLength={6}
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
+                    placeholder="6-digit PIN code"
                     className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm"
                   />
                 </div>

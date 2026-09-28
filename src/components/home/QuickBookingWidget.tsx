@@ -163,7 +163,7 @@ export const QuickBookingWidget: React.FC = () => {
       const selectedService = SERVICES.find((s) => s.slug === serviceSlug);
 
       setSuccessModalData({
-        bookingNumber: data.bookingNumber || `COOLO-${new Date().getFullYear()}-000001`,
+        bookingNumber: data.bookingNumber,
         serviceName: selectedService ? selectedService.name : 'AC Service',
         area: areaName,
         date: preferredDate,

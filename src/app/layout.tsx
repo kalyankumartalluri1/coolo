@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://coolo.in'),
   title: {
-    default: 'COOLO — Air & Cooling Solutions | AC Services in Bangalore',
+    default: 'AC Services in Bangalore',
     template: '%s | COOLO Air & Cooling Solutions',
   },
   description:
@@ -33,17 +33,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://coolo.in',
     siteName: 'COOLO',
-    title: 'COOLO — Air & Cooling Solutions at Your Doorstep',
-    description:
-      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians in Bangalore.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'COOLO — Air & Cooling Solutions',
-    description:
-      'Book reliable AC repair, servicing, cleaning and installation from verified local technicians in Bangalore.',
   },
   robots: {
     index: true,
@@ -58,9 +51,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth`}>
-      <head>
-        <link rel="canonical" href="https://coolo.in" />
-      </head>
       <body className="min-h-full flex flex-col font-sans bg-slate-50 text-slate-900 selection:bg-sky-100 selection:text-sky-900">
         <Header />
         <main className="flex-1">{children}</main>

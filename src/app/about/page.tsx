@@ -2,12 +2,13 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { ShieldCheck, HeartHandshake, Zap, Target } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'About COOLO — Air & Cooling Solutions',
-  description:
-    'Learn about Coolo: A technology-enabled cooling platform bringing transparent diagnostics, verified technicians, and digital accountability to Bangalore.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'About COOLO',
+  description: 'Learn about Coolo, Bangalore-based air and cooling services focused on clear diagnostics, technician accountability and transparent service.',
+  path: '/about',
+});
 
 export default function AboutPage() {
   return (

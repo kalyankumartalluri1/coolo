@@ -1,11 +1,13 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { BRAND } from '@/lib/constants/brand';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Terms of Service | COOLO',
-  description: 'Coolo terms of service covering bookings, diagnosis, warranties, and payment policies.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'Terms of Service',
+  description: 'Review Coolo service booking, inspection, estimate, warranty and payment terms.',
+  path: '/terms',
+});
 
 export default function TermsPage() {
   return (
@@ -29,7 +31,7 @@ export default function TermsPage() {
           2. Payment Terms
         </h3>
         <p>
-          Coolo does not mandate advance online payments for standard booking visits. Payment is due upon completion of the service visit and post-service cooling performance check. We support UPI, Card, and Cash payments.
+          Coolo does not mandate advance online payments for standard booking visits. Payment is due upon completion of the service visit and post-service cooling performance check. The portal currently records cash collection only; confirm available payment methods with the Coolo coordinator before service.
         </p>
 
         <h3 className="text-base font-bold text-slate-900 pt-2">

@@ -1,10 +1,22 @@
 import { z } from 'zod';
+import { ACTIVE_SERVICE_AREAS, TIME_SLOTS } from '@/lib/constants/areas';
+import { SERVICES } from '@/lib/constants/services';
+
+const serviceSlugSchema = z.enum(SERVICES.map(({ slug }) => slug) as [string, ...string[]]);
+const areaNameSchema = z.enum(ACTIVE_SERVICE_AREAS.map(({ areaName }) => areaName) as [string, ...string[]]);
+const dateSchema = z.string().refine((value) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(date.getTime())
+    && date.toISOString().slice(0, 10) === value
+    && value >= new Date().toISOString().slice(0, 10);
+}, 'Select a valid date that is today or later');
 
 export const quickBookingSchema = z.object({
-  serviceSlug: z.string().min(1, 'Please select a service'),
-  areaName: z.string().min(1, 'Please select your service city'),
-  preferredDate: z.string().min(1, 'Please select a preferred date'),
-  preferredTimeSlot: z.string().min(1, 'Please select a time slot'),
+  serviceSlug: serviceSlugSchema,
+  areaName: areaNameSchema,
+  preferredDate: dateSchema,
+  preferredTimeSlot: z.enum(TIME_SLOTS as [string, ...string[]]),
   customerName: z
     .string()
     .trim()
@@ -23,22 +35,22 @@ export const detailedBookingSchema = quickBookingSchema.extend({
   acType: z.enum(['Split', 'Window', 'Cassette', 'Ducted', 'Other'], {
     message: 'Please select an AC type',
   }),
-  acBrand: z.string().optional(),
-  acAge: z.string().optional(),
-  problemDescription: z.string().max(500, 'Description max 500 characters').optional(),
+  acBrand: z.string().trim().max(100).optional(),
+  acAge: z.string().trim().max(50).optional(),
+  problemDescription: z.string().trim().max(500, 'Description max 500 characters').optional(),
   customerEmail: z
     .string()
     .trim()
     .email('Please enter a valid email')
     .optional()
     .or(z.literal('')),
-  addressLine1: z.string().trim().min(5, 'Address must be at least 5 characters'),
-  addressLine2: z.string().trim().optional(),
+  addressLine1: z.string().trim().min(5, 'Address must be at least 5 characters').max(300),
+  addressLine2: z.string().trim().max(300).optional(),
   pincode: z
     .string()
     .trim()
     .regex(/^[1-9][0-9]{5}$/, 'Enter a valid 6-digit PIN code'),
-  landmark: z.string().trim().optional(),
+  landmark: z.string().trim().max(150).optional(),
 });
 
 export type QuickBookingValues = z.infer<typeof quickBookingSchema>;

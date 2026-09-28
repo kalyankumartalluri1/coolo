@@ -3,12 +3,13 @@ import type { Metadata } from 'next';
 import { ServicesGrid } from '@/components/home/ServicesGrid';
 import { WhyChooseCoolo } from '@/components/home/WhyChooseCoolo';
 import { CTASection } from '@/components/home/CTASection';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'AC & Cooling Services Catalog in Bangalore',
-  description:
-    'Explore our comprehensive cooling services: AC Repair, Deep Cleaning, Routine Servicing, Gas Refill, Installation, and Commercial HVAC in Bangalore.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'AC and Cooling Services in Bangalore',
+  description: 'Explore Coolo AC repair, regular servicing, deep cleaning, gas charging, installation and commercial HVAC services in Bangalore.',
+  path: '/services',
+});
 
 export default function ServicesPage() {
   return (

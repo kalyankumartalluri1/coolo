@@ -62,6 +62,26 @@ export function LoginForm({ confirmationError = false }: { confirmationError?: b
     setPending(false);
   }
 
+  async function handleGoogleSignIn() {
+    setPending(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const { error: oauthError } = await createClient().auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=%2Fportal`,
+        },
+      });
+      if (!oauthError) return;
+      setError('Google sign-in is unavailable right now. Please try email sign-in or contact support.');
+    } catch {
+      setError('Google sign-in is unavailable right now. Please try email sign-in or contact support.');
+    }
+    setPending(false);
+  }
+
   return (
     <div className="w-full">
       <Link href="/" className="text-sm font-bold tracking-wide text-sky-700">COOLO <span className="font-medium text-slate-400">/ secure portal</span></Link>
@@ -87,6 +107,20 @@ export function LoginForm({ confirmationError = false }: { confirmationError?: b
           {pending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <>{mode === 'signin' ? 'Sign in' : 'Create customer account'} <ArrowRight className="h-4 w-4" /></>}
         </button>
       </form>
+
+      <div className="relative my-5">
+        <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-slate-200" /></div>
+        <div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400">or continue with</span></div>
+      </div>
+      <button
+        type="button"
+        onClick={handleGoogleSignIn}
+        disabled={pending}
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-wait disabled:opacity-70"
+      >
+        <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 font-bold text-sm text-sky-700">G</span>
+        Continue with Google
+      </button>
 
       <p className="mt-6 text-center text-sm text-slate-500">
         {mode === 'signin' ? 'New to Coolo? ' : 'Already have an account? '}

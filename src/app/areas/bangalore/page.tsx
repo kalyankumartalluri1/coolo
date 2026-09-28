@@ -1,4 +1,5 @@
-import AreasPage, { metadata } from '../page';
+import { permanentRedirect } from 'next/navigation';
 
-export { metadata };
-export default AreasPage;
+export default function BangaloreAreasRedirect() {
+	permanentRedirect('/areas');
+}

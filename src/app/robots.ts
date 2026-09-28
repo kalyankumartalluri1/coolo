@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/technician/', '/api/'],
+      disallow: ['/portal', '/auth/', '/api/'],
     },
     sitemap: 'https://coolo.in/sitemap.xml',
   };

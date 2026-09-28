@@ -159,6 +159,201 @@ export interface Database {
         };
         Relationships: [];
       };
+      service_estimates: {
+        Row: {
+          id: string;
+          booking_id: string;
+          technician_id: string;
+          subtotal: number;
+          tax_amount: number;
+          discount_amount: number;
+          total_amount: number;
+          status: EstimateStatus;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          technician_id: string;
+          subtotal?: number;
+          tax_amount?: number;
+          discount_amount?: number;
+          total_amount?: number;
+          status?: EstimateStatus;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          subtotal?: number;
+          tax_amount?: number;
+          discount_amount?: number;
+          total_amount?: number;
+          status?: EstimateStatus;
+          notes?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      estimate_items: {
+        Row: {
+          id: string;
+          estimate_id: string;
+          item_type: string;
+          description: string;
+          quantity: number;
+          unit_price: number;
+          total_price: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          estimate_id: string;
+          item_type: string;
+          description: string;
+          quantity?: number;
+          unit_price: number;
+          total_price: number;
+          created_at?: string;
+        };
+        Update: {
+          item_type?: string;
+          description?: string;
+          quantity?: number;
+          unit_price?: number;
+          total_price?: number;
+        };
+        Relationships: [];
+      };
+      service_records: {
+        Row: {
+          id: string;
+          booking_id: string;
+          technician_id: string;
+          diagnosis_notes: string | null;
+          work_performed: string;
+          before_photos: string[];
+          after_photos: string[];
+          final_amount: number | null;
+          completed_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          technician_id: string;
+          diagnosis_notes?: string | null;
+          work_performed: string;
+          before_photos?: string[];
+          after_photos?: string[];
+          final_amount?: number | null;
+          completed_at?: string;
+          created_at?: string;
+        };
+        Update: {
+          diagnosis_notes?: string | null;
+          work_performed?: string;
+          before_photos?: string[];
+          after_photos?: string[];
+          final_amount?: number | null;
+          completed_at?: string;
+        };
+        Relationships: [];
+      };
+      payments: {
+        Row: {
+          id: string;
+          booking_id: string;
+          amount: number;
+          payment_method: PaymentMethod;
+          status: PaymentStatus;
+          transaction_reference: string | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          amount: number;
+          payment_method?: PaymentMethod;
+          status?: PaymentStatus;
+          transaction_reference?: string | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          amount?: number;
+          payment_method?: PaymentMethod;
+          status?: PaymentStatus;
+          transaction_reference?: string | null;
+          notes?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      reviews: {
+        Row: {
+          id: string;
+          booking_id: string;
+          customer_id: string | null;
+          rating: number;
+          comment: string | null;
+          photo_urls: string[];
+          is_moderated: boolean;
+          is_published: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          booking_id: string;
+          customer_id?: string | null;
+          rating: number;
+          comment?: string | null;
+          photo_urls?: string[];
+          is_moderated?: boolean;
+          is_published?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          rating?: number;
+          comment?: string | null;
+          is_moderated?: boolean;
+          is_published?: boolean;
+        };
+        Relationships: [];
+      };
+      notifications: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          type: string;
+          title: string;
+          message: string;
+          link: string | null;
+          is_read: boolean;
+          channel: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          type: string;
+          title: string;
+          message: string;
+          link?: string | null;
+          is_read?: boolean;
+          channel?: string;
+          created_at?: string;
+        };
+        Update: {
+          is_read?: boolean;
+        };
+        Relationships: [];
+      };
       services: {
         Row: {
           id: string;
@@ -387,7 +582,43 @@ export interface Database {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      assign_booking_technician: {
+        Args: {
+          target_booking_id: string;
+          target_technician_id: string;
+        };
+        Returns: undefined;
+      };
+      update_user_role: {
+        Args: { target_user_id: string; target_role: UserRole };
+        Returns: undefined;
+      };
+      respond_to_assignment: {
+        Args: { target_assignment_id: string; accept_assignment: boolean; decline_reason?: string | null };
+        Returns: undefined;
+      };
+      submit_service_estimate: {
+        Args: { target_booking_id: string; estimate_items: Json; tax_amount?: number; discount_amount?: number; estimate_notes?: string | null };
+        Returns: string;
+      };
+      decide_service_estimate: {
+        Args: { target_estimate_id: string; approve_estimate: boolean };
+        Returns: undefined;
+      };
+      complete_service_job: {
+        Args: { target_booking_id: string; diagnosis_notes: string; work_performed: string; service_amount: number };
+        Returns: undefined;
+      };
+      record_cash_payment: {
+        Args: { target_payment_id: string };
+        Returns: undefined;
+      };
+      submit_booking_review: {
+        Args: { target_booking_id: string; review_rating: number; review_comment?: string | null };
+        Returns: undefined;
+      };
+    };
     Enums: {
       user_role: UserRole;
       booking_status: BookingStatus;

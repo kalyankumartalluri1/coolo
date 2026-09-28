@@ -13,6 +13,10 @@ type Booking = Database['public']['Tables']['bookings']['Row'];
 type ContactRequest = Database['public']['Tables']['contact_requests']['Row'];
 type PortalUser = Pick<Database['public']['Tables']['profiles']['Row'], 'id' | 'full_name' | 'email' | 'role' | 'created_at'>;
 type TechnicianOption = Pick<Database['public']['Tables']['technicians']['Row'], 'id' | 'employee_code'>;
+type AssignmentOption = Pick<Database['public']['Tables']['technician_assignments']['Row'], 'id' | 'booking_id' | 'technician_id' | 'status'>;
+type Estimate = Database['public']['Tables']['service_estimates']['Row'] & {
+  items: Database['public']['Tables']['estimate_items']['Row'][];
+};
 
 export default async function PortalPage() {
   const account = await requirePortalAccount();
@@ -21,8 +25,20 @@ export default async function PortalPage() {
   let contacts: ContactRequest[] = [];
   let users: PortalUser[] = [];
   let technicians: TechnicianOption[] = [];
-  let assignedTechnicianByBooking: Record<string, string> = {};
+  let assignmentByBooking: Record<string, AssignmentOption> = {};
   let technicianReady = true;
+  let estimates: Estimate[] = [];
+  let serviceRecords: Database['public']['Tables']['service_records']['Row'][] = [];
+  let payments: Database['public']['Tables']['payments']['Row'][] = [];
+  let reviews: Database['public']['Tables']['reviews']['Row'][] = [];
+  let bookingHistory: Database['public']['Tables']['booking_status_history']['Row'][] = [];
+
+  const { data: notificationData } = await supabase
+    .from('notifications')
+    .select('*')
+    .eq('user_id', account.user.id)
+    .order('created_at', { ascending: false })
+    .limit(20);
 
   if (account.profile.role === 'CUSTOMER') {
     const { data: customer } = await supabase
@@ -51,9 +67,12 @@ export default async function PortalPage() {
     if (technician) {
       const { data: assignments } = await supabase
         .from('technician_assignments')
-        .select('booking_id')
+        .select('id, booking_id, technician_id, status')
         .eq('technician_id', technician.id)
-        .in('status', ['ASSIGNED', 'ACCEPTED']);
+        .in('status', ['ASSIGNED', 'ACCEPTED', 'COMPLETED']);
+      assignmentByBooking = Object.fromEntries(
+        (assignments ?? []).map((assignment) => [assignment.booking_id, assignment])
+      );
       const bookingIds = assignments?.map((assignment) => assignment.booking_id) ?? [];
 
       if (bookingIds.length) {
@@ -91,10 +110,13 @@ export default async function PortalPage() {
     if (bookingIds.length) {
       const { data: assignments } = await supabase
         .from('technician_assignments')
-        .select('booking_id, technician_id')
-        .in('booking_id', bookingIds);
-      assignedTechnicianByBooking = Object.fromEntries(
-        (assignments ?? []).map((assignment) => [assignment.booking_id, assignment.technician_id])
+        .select('id, booking_id, technician_id, status')
+        .in('booking_id', bookingIds)
+        .order('assigned_at', { ascending: true });
+      assignmentByBooking = Object.fromEntries(
+        (assignments ?? [])
+          .filter((assignment) => ['ASSIGNED', 'ACCEPTED'].includes(assignment.status))
+          .map((assignment) => [assignment.booking_id, assignment])
       );
     }
 
@@ -108,6 +130,32 @@ export default async function PortalPage() {
     }
   }
 
+  const bookingIds = bookings.map((booking) => booking.id);
+  if (bookingIds.length) {
+    const [estimateResult, recordResult, paymentResult, reviewResult, historyResult] = await Promise.all([
+      supabase.from('service_estimates').select('*').in('booking_id', bookingIds).order('created_at', { ascending: false }),
+      supabase.from('service_records').select('*').in('booking_id', bookingIds),
+      supabase.from('payments').select('*').in('booking_id', bookingIds).order('created_at', { ascending: false }),
+      supabase.from('reviews').select('*').in('booking_id', bookingIds),
+      supabase.from('booking_status_history').select('*').in('booking_id', bookingIds).order('created_at', { ascending: true }).limit(300),
+    ]);
+
+    serviceRecords = recordResult.data ?? [];
+    payments = paymentResult.data ?? [];
+    reviews = reviewResult.data ?? [];
+    bookingHistory = historyResult.data ?? [];
+
+    const estimateRows = estimateResult.data ?? [];
+    const estimateIds = estimateRows.map((estimate) => estimate.id);
+    const { data: estimateItems } = estimateIds.length
+      ? await supabase.from('estimate_items').select('*').in('estimate_id', estimateIds)
+      : { data: [] };
+    estimates = estimateRows.map((estimate) => ({
+      ...estimate,
+      items: (estimateItems ?? []).filter((item) => item.estimate_id === estimate.id),
+    }));
+  }
+
   return (
     <PortalDashboard
       account={account.profile}
@@ -115,8 +163,14 @@ export default async function PortalPage() {
       contacts={contacts}
       users={users}
       technicians={technicians}
-      assignedTechnicianByBooking={assignedTechnicianByBooking}
+      assignmentByBooking={assignmentByBooking}
       technicianReady={technicianReady}
+      estimates={estimates}
+      serviceRecords={serviceRecords}
+      payments={payments}
+      reviews={reviews}
+      bookingHistory={bookingHistory}
+      notifications={notificationData ?? []}
     />
   );
 }

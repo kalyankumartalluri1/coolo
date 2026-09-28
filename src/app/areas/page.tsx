@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { MapPin, ArrowRight, ShieldCheck, Clock } from 'lucide-react';
 import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 import { CTASection } from '@/components/home/CTASection';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Service Cities | COOLO Coverage',
-  description:
-    'Coolo provides AC repair, installation and maintenance services across major Indian cities including Bangalore, Pune, Hyderabad, Chennai, Delhi NCR, and more.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'AC Service Areas in Bangalore',
+  description: 'Check Coolo AC repair, installation and maintenance coverage across Bangalore service areas.',
+  path: '/areas',
+});
 
 export default function AreasPage() {
   return (

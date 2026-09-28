@@ -1,11 +1,13 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { BRAND } from '@/lib/constants/brand';
+import { createPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | COOLO',
-  description: 'Coolo privacy policy regarding data collection, service bookings, and customer protection.',
-};
+export const metadata: Metadata = createPageMetadata({
+  title: 'Privacy Policy',
+  description: 'Read how Coolo handles information used for service bookings, customer support and technician operations.',
+  path: '/privacy',
+});
 
 export default function PrivacyPage() {
   return (

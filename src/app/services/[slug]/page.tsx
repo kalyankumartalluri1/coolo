@@ -22,6 +22,8 @@ import { BRAND } from '@/lib/constants/brand';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FAQSection } from '@/components/home/FAQSection';
+import { createPageMetadata } from '@/lib/seo';
+import { SITE_URL } from '@/lib/seo';
 
 interface ServicePageProps {
   params: Promise<{ slug: string }>;
@@ -45,18 +47,11 @@ export async function generateMetadata({
     };
   }
 
-  return {
-    title: `${service.name} in Bangalore — Upfront Diagnostics & Transparent Pricing`,
+  return createPageMetadata({
+    title: `${service.name} in Bangalore`,
     description: service.shortDescription,
-    alternates: {
-      canonical: `https://coolo.in/services/${service.slug}`,
-    },
-    openGraph: {
-      title: `${service.name} | COOLO Bangalore`,
-      description: service.shortDescription,
-      url: `https://coolo.in/services/${service.slug}`,
-    },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 const getIcon = (name: string) => {
@@ -93,9 +88,41 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
     0,
     3
   );
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        '@id': `${SITE_URL}/services/${service.slug}#service`,
+        name: service.name,
+        description: service.fullDescription,
+        serviceType: service.name,
+        url: `${SITE_URL}/services/${service.slug}`,
+        provider: {
+          '@type': 'HVACBusiness',
+          name: BRAND.name,
+          url: SITE_URL,
+          telephone: BRAND.contact.phone,
+        },
+        areaServed: { '@type': 'City', name: 'Bangalore' },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE_URL}/services` },
+          { '@type': 'ListItem', position: 3, name: service.name, item: `${SITE_URL}/services/${service.slug}` },
+        ],
+      },
+    ],
+  };
 
   return (
     <div className="pt-4 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }}
+      />
       {/* Hero Banner */}
       <section className="cooling-hero-gradient border-b border-slate-200/60 py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -251,7 +278,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                       Digital Bill & Warranty Confirmation
                     </h4>
                     <p className="text-xs text-slate-600 mt-1">
-                      Pay easily via UPI, Card or Cash only after testing. Receive a digital service invoice directly to your mobile.
+                      Payment is due after service and testing. Contact our coordinator to confirm available payment methods.
                     </p>
                   </div>
                 </div>
