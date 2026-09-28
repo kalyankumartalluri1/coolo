@@ -3,8 +3,12 @@ import { Phone, ShieldCheck, CheckCircle2, Clock, FileText, Sparkles, Snowflake 
 import { BRAND } from '@/lib/constants/brand';
 import { Button } from '@/components/ui/Button';
 import { QuickBookingWidget } from './QuickBookingWidget';
+import { getPortalAccount } from '@/lib/auth/portal';
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC = async () => {
+  const account = await getPortalAccount();
+  const profile = account?.profile ?? null;
+
   return (
     <section className="relative overflow-hidden cooling-hero-gradient pt-8 pb-16 lg:pt-14 lg:pb-24 border-b border-slate-200/60">
       {/* Background cooling ambient orbs */}
@@ -19,7 +23,7 @@ export const Hero: React.FC = () => {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-sky-200/80 shadow-xs">
               <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-ping" />
               <span className="text-xs font-semibold text-sky-800">
-                Bangalore’s Dedicated Air & Cooling Specialists
+                Bangalore's Dedicated Air & Cooling Specialists
               </span>
             </div>
 
@@ -83,9 +87,12 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Quick Booking Widget */}
+          {/* Right Column: Quick Booking Widget — pre-filled when signed in */}
           <div className="md:col-span-1 lg:col-span-6">
-            <QuickBookingWidget />
+            <QuickBookingWidget
+              initialName={profile?.full_name ?? ''}
+              initialMobile={''}
+            />
           </div>
         </div>
       </div>

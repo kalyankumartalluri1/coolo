@@ -1,9 +1,14 @@
 import React from 'react';
-import { Phone, CalendarCheck, Wind, MessageCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Phone, CalendarCheck, Wind, MessageCircle, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { Button } from '@/components/ui/Button';
+import { getPortalAccount } from '@/lib/auth/portal';
 
-export const CTASection: React.FC = () => {
+export const CTASection: React.FC = async () => {
+  const account = await getPortalAccount();
+  const isSignedIn = Boolean(account);
+
   const whatsappUrl = `https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
     BRAND.whatsappBookingMessage
   )}`;
@@ -12,7 +17,6 @@ export const CTASection: React.FC = () => {
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-600 via-sky-700 to-slate-900 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
-          {/* Subtle cooling background graphics */}
           <div className="absolute -right-10 -bottom-10 w-72 h-72 bg-white/10 rounded-full blur-2xl pointer-events-none" />
           <div className="absolute top-6 right-12 opacity-10 hidden sm:block">
             <Wind className="w-48 h-48" />
@@ -30,15 +34,26 @@ export const CTASection: React.FC = () => {
             </p>
 
             <div className="pt-4 flex flex-wrap items-center gap-3">
-              <Button
-                href="/book-service"
-                size="lg"
-                variant="secondary"
-                className="bg-white text-slate-900 hover:bg-slate-100 border-white shadow-lg"
-                leftIcon={<CalendarCheck className="w-4 h-4 text-sky-600" />}
-              >
-                Book a Service
-              </Button>
+              {/* Primary CTA: portal link for signed-in, book-service for guests */}
+              {isSignedIn ? (
+                <Link
+                  href="/portal"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm transition-all shadow-lg"
+                >
+                  <LayoutDashboard className="w-4 h-4 text-sky-600" />
+                  My Bookings
+                </Link>
+              ) : (
+                <Button
+                  href="/book-service"
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-slate-900 hover:bg-slate-100 border-white shadow-lg"
+                  leftIcon={<CalendarCheck className="w-4 h-4 text-sky-600" />}
+                >
+                  Book a Service
+                </Button>
+              )}
 
               <a
                 href={whatsappUrl}

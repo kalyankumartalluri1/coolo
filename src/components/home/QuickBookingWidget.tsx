@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Wrench, User, Phone, CheckCircle2, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { Calendar, Clock, LayoutDashboard, MapPin, Wrench, User, Phone, CheckCircle2, ArrowRight } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
 import { ACTIVE_SERVICE_AREAS, DEFAULT_SERVICE_AREA, TIME_SLOTS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
@@ -9,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 interface BookingSuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isSignedIn: boolean;
   bookingData: {
     bookingNumber: string;
     serviceName: string;
@@ -22,12 +24,13 @@ interface BookingSuccessModalProps {
 const BookingSuccessModal: React.FC<BookingSuccessModalProps> = ({
   isOpen,
   onClose,
+  isSignedIn,
   bookingData,
 }) => {
   if (!isOpen || !bookingData) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
       <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center relative">
         <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-xs">
           <CheckCircle2 className="w-10 h-10" />
@@ -44,13 +47,11 @@ const BookingSuccessModal: React.FC<BookingSuccessModalProps> = ({
           Your booking is confirmed in our system. A service coordinator is assigning a certified technician for your slot.
         </p>
 
-        {/* Booking Card Details */}
+        {/* Booking Details */}
         <div className="bg-slate-50 rounded-2xl p-4 text-left border border-slate-200/80 mb-6 space-y-2.5 text-xs text-slate-700">
           <div className="flex justify-between items-center pb-2 border-b border-slate-200">
             <span className="font-semibold text-slate-500 uppercase tracking-wide">Booking ID</span>
-            <span className="font-mono font-bold text-sky-600 text-sm">
-              {bookingData.bookingNumber}
-            </span>
+            <span className="font-mono font-bold text-sky-600 text-sm">{bookingData.bookingNumber}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-slate-500">Service</span>
@@ -62,9 +63,7 @@ const BookingSuccessModal: React.FC<BookingSuccessModalProps> = ({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-slate-500">Date & Slot</span>
-            <span className="font-medium text-slate-900">
-              {bookingData.date} ({bookingData.time})
-            </span>
+            <span className="font-medium text-slate-900">{bookingData.date} ({bookingData.time})</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-slate-500">Customer</span>
@@ -73,37 +72,61 @@ const BookingSuccessModal: React.FC<BookingSuccessModalProps> = ({
         </div>
 
         <p className="text-xs text-slate-500 mb-6">
-          You will receive a confirmation call or message before the technician visits your premises. No upfront payment required.
+          You will receive a confirmation call or message before the technician visits. No upfront payment required.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="secondary" className="w-full" onClick={onClose}>
-            Close
-          </Button>
-          <Button
-            href={`/services`}
-            variant="outline"
-            className="w-full"
-            onClick={onClose}
-          >
-            Explore Services
-          </Button>
+          {isSignedIn ? (
+            <>
+              <Link
+                href="/portal"
+                onClick={onClose}
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm transition-colors"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                View My Bookings
+              </Link>
+              <Button variant="outline" className="flex-1" onClick={onClose}>
+                Book Another
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="secondary" className="flex-1" onClick={onClose}>
+                Close
+              </Button>
+              <Link
+                href="/portal/login"
+                onClick={onClose}
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-xl border border-sky-200 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold text-sm transition-colors"
+              >
+                Sign in to track booking
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export const QuickBookingWidget: React.FC = () => {
-  // Format today's date for minimum input (YYYY-MM-DD)
+interface QuickBookingWidgetProps {
+  initialName?: string;
+  initialMobile?: string;
+}
+
+export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
+  initialName = '',
+  initialMobile = '',
+}) => {
   const today = new Date().toISOString().split('T')[0];
 
   const [serviceSlug, setServiceSlug] = useState('ac-service');
   const [areaName, setAreaName] = useState(DEFAULT_SERVICE_AREA);
   const [preferredDate, setPreferredDate] = useState(today);
   const [preferredTimeSlot, setPreferredTimeSlot] = useState(TIME_SLOTS[0]);
-  const [customerName, setCustomerName] = useState('');
-  const [customerMobile, setCustomerMobile] = useState('');
+  const [customerName, setCustomerName] = useState(initialName);
+  const [customerMobile, setCustomerMobile] = useState(initialMobile);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -116,11 +139,12 @@ export const QuickBookingWidget: React.FC = () => {
     customerName: string;
   } | null>(null);
 
+  const isSignedIn = Boolean(initialName);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
-    // Quick client-side validations
     if (!customerName.trim() || customerName.trim().length < 2) {
       setErrorMessage('Please enter your full name (at least 2 characters).');
       return;
@@ -171,9 +195,9 @@ export const QuickBookingWidget: React.FC = () => {
         customerName: customerName.trim(),
       });
 
-      // Clear form inputs
-      setCustomerName('');
-      setCustomerMobile('');
+      // Reset only the non-identity fields
+      if (!initialName) setCustomerName('');
+      if (!initialMobile) setCustomerMobile('');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setErrorMessage(err.message);
@@ -188,7 +212,6 @@ export const QuickBookingWidget: React.FC = () => {
   return (
     <>
       <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/90 relative overflow-hidden">
-        {/* Decorative cooling accent glow */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-sky-100/50 rounded-full blur-3xl pointer-events-none" />
 
         <div className="mb-6">
@@ -214,10 +237,7 @@ export const QuickBookingWidget: React.FC = () => {
           {/* Row 1: Service & Location */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label
-                htmlFor="service-select"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="service-select" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <Wrench className="w-3.5 h-3.5 text-sky-600" />
                 <span>Select Service</span>
               </label>
@@ -228,18 +248,13 @@ export const QuickBookingWidget: React.FC = () => {
                 className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm text-slate-800 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-colors"
               >
                 {SERVICES.map((s) => (
-                  <option key={s.slug} value={s.slug}>
-                    {s.name} (from ₹{s.startingPrice})
-                  </option>
+                  <option key={s.slug} value={s.slug}>{s.name} (from ₹{s.startingPrice})</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label
-                htmlFor="area-select"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="area-select" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-sky-600" />
                 <span>Service City</span>
               </label>
@@ -250,9 +265,7 @@ export const QuickBookingWidget: React.FC = () => {
                 className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm text-slate-800 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-colors"
               >
                 {ACTIVE_SERVICE_AREAS.map((a) => (
-                  <option key={a.id} value={a.areaName}>
-                    {a.areaName}
-                  </option>
+                  <option key={a.id} value={a.areaName}>{a.areaName}</option>
                 ))}
               </select>
             </div>
@@ -261,10 +274,7 @@ export const QuickBookingWidget: React.FC = () => {
           {/* Row 2: Date & Time Slot */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label
-                htmlFor="date-input"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="date-input" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-sky-600" />
                 <span>Preferred Date</span>
               </label>
@@ -280,10 +290,7 @@ export const QuickBookingWidget: React.FC = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="slot-select"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="slot-select" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-sky-600" />
                 <span>Preferred Slot</span>
               </label>
@@ -294,9 +301,7 @@ export const QuickBookingWidget: React.FC = () => {
                 className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm text-slate-800 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-colors"
               >
                 {TIME_SLOTS.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
+                  <option key={slot} value={slot}>{slot}</option>
                 ))}
               </select>
             </div>
@@ -305,10 +310,7 @@ export const QuickBookingWidget: React.FC = () => {
           {/* Row 3: Name & Mobile */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label
-                htmlFor="name-input"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="name-input" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-sky-600" />
                 <span>Your Name</span>
               </label>
@@ -324,17 +326,12 @@ export const QuickBookingWidget: React.FC = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="mobile-input"
-                className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5"
-              >
+              <label htmlFor="mobile-input" className="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 text-sky-600" />
                 <span>Mobile Number</span>
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">
-                  +91
-                </span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">+91</span>
                 <input
                   id="mobile-input"
                   type="tel"
@@ -368,10 +365,10 @@ export const QuickBookingWidget: React.FC = () => {
         </form>
       </div>
 
-      {/* Confirmation Modal */}
       <BookingSuccessModal
         isOpen={!!successModalData}
         onClose={() => setSuccessModalData(null)}
+        isSignedIn={isSignedIn}
         bookingData={successModalData}
       />
     </>

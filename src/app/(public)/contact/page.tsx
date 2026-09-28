@@ -3,8 +3,20 @@ import { Phone, Mail, MapPin, Clock, MessageSquare } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/contact/ContactForm';
+import { getPortalAccount } from '@/lib/auth/portal';
+import { createPageMetadata } from '@/lib/seo';
+import type { Metadata } from 'next';
 
-export default function ContactPage() {
+export const metadata: Metadata = createPageMetadata({
+  title: 'Contact Coolo Support',
+  description: 'Get in touch with Coolo for AC service queries, corporate quotes, AMC packages, or technician support in Bangalore.',
+  path: '/contact',
+});
+
+export default async function ContactPage() {
+  const account = await getPortalAccount();
+  const profile = account?.profile ?? null;
+
   return (
     <div className="pt-8 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,13 +53,8 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold text-slate-900 block">
-                      Phone Call Support
-                    </span>
-                    <a
-                      href={`tel:${BRAND.contact.phone}`}
-                      className="text-sky-600 hover:underline"
-                    >
+                    <span className="font-semibold text-slate-900 block">Phone Call Support</span>
+                    <a href={`tel:${BRAND.contact.phone}`} className="text-sky-600 hover:underline">
                       {BRAND.contact.phoneDisplay}
                     </a>
                   </div>
@@ -56,13 +63,8 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Mail className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold text-slate-900 block">
-                      Email Inquiries
-                    </span>
-                    <a
-                      href={`mailto:${BRAND.contact.email}`}
-                      className="text-sky-600 hover:underline"
-                    >
+                    <span className="font-semibold text-slate-900 block">Email Inquiries</span>
+                    <a href={`mailto:${BRAND.contact.email}`} className="text-sky-600 hover:underline">
                       {BRAND.contact.email}
                     </a>
                   </div>
@@ -71,9 +73,7 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <Clock className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold text-slate-900 block">
-                      Working Hours
-                    </span>
+                    <span className="font-semibold text-slate-900 block">Working Hours</span>
                     <span>{BRAND.contact.workingHours}</span>
                   </div>
                 </div>
@@ -81,9 +81,7 @@ export default function ContactPage() {
 
               <div className="mt-6 pt-5 border-t border-slate-100">
                 <a
-                  href={`https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
-                    BRAND.whatsappBookingMessage
-                  )}`}
+                  href={`https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(BRAND.whatsappBookingMessage)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors shadow-xs"
@@ -95,9 +93,13 @@ export default function ContactPage() {
             </Card>
           </div>
 
-          {/* Right Column: Contact Form */}
+          {/* Right Column: Contact Form — pre-filled when signed in */}
           <div className="md:col-span-7">
-            <ContactForm />
+            <ContactForm
+              initialName={profile?.full_name ?? ''}
+              initialEmail={profile?.email ?? ''}
+              initialMobile={''}
+            />
           </div>
         </div>
       </div>

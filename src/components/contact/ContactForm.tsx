@@ -4,10 +4,20 @@ import { useState, type FormEvent } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
-export function ContactForm() {
-  const [name, setName] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [email, setEmail] = useState('');
+interface ContactFormProps {
+  initialName?: string;
+  initialEmail?: string;
+  initialMobile?: string;
+}
+
+export function ContactForm({
+  initialName = '',
+  initialEmail = '',
+  initialMobile = '',
+}: ContactFormProps) {
+  const [name, setName] = useState(initialName);
+  const [mobile, setMobile] = useState(initialMobile);
+  const [email, setEmail] = useState(initialEmail);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,10 +59,8 @@ export function ContactForm() {
       if (!response.ok || !data.success) throw new Error(data.error || 'Failed to submit inquiry.');
 
       setIsSuccess(true);
-      setName('');
-      setMobile('');
-      setEmail('');
       setMessage('');
+      // Keep name/email pre-filled for convenience if they want to send another
     } catch (error: unknown) {
       setErrorMessage(error instanceof Error ? error.message : 'Unable to send message. Please call our team directly.');
     } finally {
@@ -78,27 +86,79 @@ export function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {errorMessage && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700">{errorMessage}</div>}
+          {errorMessage && (
+            <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700">
+              {errorMessage}
+            </div>
+          )}
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="contact-name" className="mb-1 block text-xs font-semibold text-slate-700">Your Name *</label>
-              <input id="contact-name" type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Ramesh" autoComplete="name" className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm" required minLength={2} maxLength={150} />
+              <label htmlFor="contact-name" className="mb-1 block text-xs font-semibold text-slate-700">
+                Your Name *
+              </label>
+              <input
+                id="contact-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Ramesh"
+                autoComplete="name"
+                className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm"
+                required
+                minLength={2}
+                maxLength={150}
+              />
             </div>
             <div>
-              <label htmlFor="contact-mobile" className="mb-1 block text-xs font-semibold text-slate-700">Mobile Number *</label>
-              <input id="contact-mobile" type="tel" value={mobile} onChange={(event) => setMobile(event.target.value)} placeholder="98765 43210" autoComplete="tel" className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm" required maxLength={15} />
+              <label htmlFor="contact-mobile" className="mb-1 block text-xs font-semibold text-slate-700">
+                Mobile Number *
+              </label>
+              <input
+                id="contact-mobile"
+                type="tel"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                placeholder="98765 43210"
+                autoComplete="tel"
+                className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm"
+                required
+                maxLength={15}
+              />
             </div>
           </div>
 
           <div>
-            <label htmlFor="contact-email" className="mb-1 block text-xs font-semibold text-slate-700">Email Address (Optional)</label>
-            <input id="contact-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="ramesh@example.com" autoComplete="email" className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm" maxLength={150} />
+            <label htmlFor="contact-email" className="mb-1 block text-xs font-semibold text-slate-700">
+              Email Address (Optional)
+            </label>
+            <input
+              id="contact-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="ramesh@example.com"
+              autoComplete="email"
+              className="h-11 w-full rounded-xl border border-slate-200 px-3.5 text-sm"
+              maxLength={150}
+            />
           </div>
 
           <div>
-            <label htmlFor="contact-message" className="mb-1 block text-xs font-semibold text-slate-700">Message / Requirement *</label>
-            <textarea id="contact-message" rows={4} value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Tell us about your AC requirement, unit count, or issue..." className="w-full rounded-xl border border-slate-200 p-3.5 text-sm" required minLength={5} maxLength={2000} />
+            <label htmlFor="contact-message" className="mb-1 block text-xs font-semibold text-slate-700">
+              Message / Requirement *
+            </label>
+            <textarea
+              id="contact-message"
+              rows={4}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Tell us about your AC requirement, unit count, or issue..."
+              className="w-full rounded-xl border border-slate-200 p-3.5 text-sm"
+              required
+              minLength={5}
+              maxLength={2000}
+            />
           </div>
 
           <Button type="submit" variant="primary" size="lg" className="w-full" isLoading={isLoading}>
