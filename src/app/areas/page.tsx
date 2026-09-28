@@ -21,7 +21,7 @@ export default function AreasPage() {
           <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200/60">
             City Service Network
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mt-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-3">
             Cities We Serve
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-3">
@@ -75,7 +75,7 @@ export default function AreasPage() {
         </div>
 
         {/* Coverage Guarantees */}
-        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200/80 mb-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200/80 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex items-start gap-3">
             <Clock className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
             <div>

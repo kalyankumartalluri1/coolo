@@ -12,9 +12,9 @@ export const Hero: React.FC = () => {
       <div className="absolute top-40 right-10 w-80 h-80 bg-teal-100/50 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           {/* Left Column: Headline, Trust & Action */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="md:col-span-1 lg:col-span-6 space-y-6">
             {/* Pill Tag */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-sky-200/80 shadow-xs">
               <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-ping" />
@@ -84,7 +84,7 @@ export const Hero: React.FC = () => {
           </div>
 
           {/* Right Column: Quick Booking Widget */}
-          <div className="lg:col-span-6">
+          <div className="md:col-span-1 lg:col-span-6">
             <QuickBookingWidget />
           </div>
         </div>

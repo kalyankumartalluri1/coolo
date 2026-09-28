@@ -231,7 +231,7 @@ export function PortalDashboard({ account, bookings, contacts, users, technician
   const openContacts = contacts.filter((request) => request.status !== 'RESOLVED').length;
 
   return (
-    <div className="min-h-[80vh] bg-slate-50 pb-16">
+    <div className="min-h-[80vh] bg-slate-50 pb-24 md:pb-16">
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
@@ -254,14 +254,14 @@ export function PortalDashboard({ account, bookings, contacts, users, technician
 
         {account.role === 'TECHNICIAN' && !technicianReady && <div role="status" className="mt-7 flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900"><Wrench className="mt-0.5 h-5 w-5 shrink-0" /><p><strong>Technician profile pending.</strong> Your account is active, but a technician record has not been linked yet. Ask a Coolo administrator to finish onboarding.</p></div>}
 
-        <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label={account.role === 'CUSTOMER' ? 'My bookings' : 'Bookings in view'} value={bookings.length} detail={account.role === 'TECHNICIAN' ? 'Assigned service jobs' : 'Recent service requests'} icon={ClipboardList} />
           <StatCard label="Active" value={activeBookings} detail="Requests still being worked" icon={Clock3} />
           <StatCard label="Completed" value={completedBookings} detail="Jobs marked complete" icon={CheckCircle2} />
           {(account.role === 'ADMIN' || account.role === 'SUPER_ADMIN') ? <StatCard label="Open enquiries" value={openContacts} detail="Customer messages to follow up" icon={Headset} /> : <StatCard label="Role access" value={account.role === 'CUSTOMER' ? 1 : 2} detail={account.role === 'CUSTOMER' ? 'Personal service workspace' : 'Protected team workspace'} icon={ShieldCheck} />}
         </div>
 
-        <div className="mt-8 grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
           <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-900/[0.02]">
             <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-5 py-4 sm:px-6"><div><h2 className="font-bold text-slate-900">{account.role === 'CUSTOMER' ? 'Your bookings' : account.role === 'TECHNICIAN' ? 'Assigned jobs' : 'Booking queue'}</h2><p className="mt-1 text-xs text-slate-500">{account.role === 'CUSTOMER' ? 'Only bookings made while signed in are listed here.' : 'Latest service requests and their current status.'}</p></div><CalendarDays className="h-5 w-5 text-slate-400" /></div>
             {bookings.length ? bookings.map((booking) => <BookingCard

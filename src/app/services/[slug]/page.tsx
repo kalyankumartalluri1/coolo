@@ -127,7 +127,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
       <section className="cooling-hero-gradient border-b border-slate-200/60 py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-4">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 mb-4">
               <Link href="/" className="hover:text-sky-600">
                 Home
               </Link>

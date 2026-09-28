@@ -14,7 +14,7 @@ export default async function PortalLoginPage({
   const params = await searchParams;
 
   return (
-    <div className="min-h-[75vh] bg-slate-950 px-4 py-14 sm:px-6 sm:py-20">
+    <div className="min-h-[75vh] bg-slate-950 px-4 py-14 pb-24 sm:px-6 sm:py-20 md:pb-20">
       <div className="mx-auto grid max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl shadow-slate-950/20 md:grid-cols-[1.05fr_0.95fr]">
         <section className="relative hidden min-h-[580px] flex-col justify-between overflow-hidden bg-gradient-to-br from-sky-700 via-cyan-700 to-teal-800 p-10 text-white md:flex">
           <div className="absolute -right-24 -top-20 h-80 w-80 rounded-full border-[48px] border-white/10" />

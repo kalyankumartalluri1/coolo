@@ -12,7 +12,7 @@ export default function ContactPage() {
           <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200/60">
             Get In Touch
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mt-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-3">
             Contact Coolo Support
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-3">
@@ -20,9 +20,9 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
           {/* Left Column: Business details */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="md:col-span-5 space-y-6">
             <Card className="p-6 border-slate-200">
               <h2 className="text-xl font-bold text-slate-900 mb-4">
                 Operational Office
@@ -96,7 +96,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7">
+          <div className="md:col-span-7">
             <ContactForm />
           </div>
         </div>

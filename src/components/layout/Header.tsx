@@ -97,7 +97,7 @@ export const Header: React.FC = () => {
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/portal/login"
               className="px-2 py-2 text-xs font-semibold text-slate-600 transition-colors hover:text-sky-700"

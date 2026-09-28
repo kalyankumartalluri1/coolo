@@ -137,7 +137,7 @@ export const ServicesGrid: React.FC = () => {
               We manage office chillers, cassette AC networks, and server room climate control with custom SLA uptime agreements.
             </p>
           </div>
-          <div className="flex gap-3 shrink-0">
+          <div className="flex flex-wrap gap-3 shrink-0">
             <Button href="/services/commercial-ac" variant="outline" className="text-xs">
               Commercial AC
             </Button>

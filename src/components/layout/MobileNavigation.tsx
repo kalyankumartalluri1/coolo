@@ -37,7 +37,7 @@ export function MobileNavigation() {
       </div>
 
       {menuOpen && (
-        <nav id="mobile-navigation-drawer" aria-label="Mobile navigation" className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg">
+        <nav id="mobile-navigation-drawer" aria-label="Mobile navigation" className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[80vh] overflow-y-auto">
           <div className="space-y-1">
             <Link href="/" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg">
               Home

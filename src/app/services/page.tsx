@@ -18,7 +18,7 @@ export default function ServicesPage() {
         <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200/60">
           Our Services Catalog
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mt-3">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-3">
           Complete Air & Cooling Solutions
         </h1>
         <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto mt-3">

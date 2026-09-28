@@ -19,7 +19,7 @@ export default function AboutPage() {
           <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200/60">
             About Our Mission
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight mt-3">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight mt-3">
             Cooling Service Built on Transparency & Quality
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-4 leading-relaxed">
@@ -28,7 +28,7 @@ export default function AboutPage() {
         </div>
 
         {/* Brand Core Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20">
           <div className="bg-white p-8 rounded-3xl border border-slate-200/90 shadow-xs">
             <div className="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-4">
               <ShieldCheck className="w-6 h-6" />
