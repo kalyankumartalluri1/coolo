@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { MobileActionBar } from '@/components/layout/MobileActionBar';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -52,10 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} h-full scroll-smooth`}>
       <body className="min-h-full flex flex-col font-sans bg-slate-50 text-slate-900 selection:bg-sky-100 selection:text-sky-900">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MobileActionBar />
+        {children}
       </body>
     </html>
   );
