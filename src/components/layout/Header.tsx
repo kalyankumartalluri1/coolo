@@ -1,12 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
-import { Phone, Wind, ChevronDown } from 'lucide-react';
+import { Phone, Wind, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
 import { Button } from '@/components/ui/Button';
 import { MobileNavigation } from '@/components/layout/MobileNavigation';
+import { getPortalAccount } from '@/lib/auth/portal';
 
-export const Header: React.FC = () => {
+export const Header: React.FC = async () => {
+  // Read session server-side — safe, cached per request via React cache()
+  const account = await getPortalAccount();
+  const user = account?.profile ?? null;
+
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,12 +103,36 @@ export const Header: React.FC = () => {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/portal/login"
-              className="px-2 py-2 text-xs font-semibold text-slate-600 transition-colors hover:text-sky-700"
-            >
-              Sign in
-            </Link>
+            {user ? (
+              /* Signed-in state */
+              <Link
+                href="/portal"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 transition-colors group"
+              >
+                {/* Avatar initial */}
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-sky-600 text-white text-xs font-bold shrink-0">
+                  {user.full_name.slice(0, 1).toUpperCase()}
+                </span>
+                <span className="flex flex-col leading-tight">
+                  <span className="text-xs font-semibold text-slate-800 group-hover:text-sky-700 max-w-[120px] truncate">
+                    {user.full_name}
+                  </span>
+                  <span className="text-[10px] text-slate-400 capitalize">
+                    {user.role.toLowerCase().replace('_', ' ')}
+                  </span>
+                </span>
+                <LayoutDashboard className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 shrink-0" />
+              </Link>
+            ) : (
+              /* Signed-out state */
+              <Link
+                href="/portal/login"
+                className="px-2 py-2 text-xs font-semibold text-slate-600 transition-colors hover:text-sky-700"
+              >
+                Sign in
+              </Link>
+            )}
+
             <a
               href={`tel:${BRAND.contact.phone}`}
               className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
@@ -117,7 +146,7 @@ export const Header: React.FC = () => {
             </Button>
           </div>
 
-          <MobileNavigation />
+          <MobileNavigation user={user} />
         </div>
       </div>
     </header>

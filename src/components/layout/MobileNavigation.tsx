@@ -2,12 +2,20 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, Phone, X } from 'lucide-react';
+import { LayoutDashboard, Menu, Phone, X } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
 import { Button } from '@/components/ui/Button';
 
-export function MobileNavigation() {
+interface MobileNavigationProps {
+  user: {
+    full_name: string;
+    role: string;
+    email: string | null;
+  } | null;
+}
+
+export function MobileNavigation({ user }: MobileNavigationProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function closeMenu() {
@@ -37,7 +45,31 @@ export function MobileNavigation() {
       </div>
 
       {menuOpen && (
-        <nav id="mobile-navigation-drawer" aria-label="Mobile navigation" className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[80vh] overflow-y-auto">
+        <nav
+          id="mobile-navigation-drawer"
+          aria-label="Mobile navigation"
+          className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[80vh] overflow-y-auto"
+        >
+          {/* Signed-in user card */}
+          {user && (
+            <Link
+              href="/portal"
+              onClick={closeMenu}
+              className="flex items-center gap-3 px-3 py-3 rounded-xl bg-sky-50 border border-sky-200/60 hover:bg-sky-100 transition-colors"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-600 text-white text-sm font-bold">
+                {user.full_name.slice(0, 1).toUpperCase()}
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-slate-800 truncate">{user.full_name}</p>
+                <p className="text-[11px] text-slate-500 capitalize">
+                  {user.role.toLowerCase().replace('_', ' ')} · Go to workspace
+                </p>
+              </div>
+              <LayoutDashboard className="w-4 h-4 text-sky-600 shrink-0 ml-auto" />
+            </Link>
+          )}
+
           <div className="space-y-1">
             <Link href="/" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg">
               Home
@@ -61,9 +93,13 @@ export function MobileNavigation() {
             <Link href="/contact" onClick={closeMenu} className="block px-3 py-2 text-base font-medium text-slate-800 hover:bg-sky-50 hover:text-sky-600 rounded-lg">
               Contact Us
             </Link>
-            <Link href="/portal/login" onClick={closeMenu} className="block px-3 py-2 text-base font-semibold text-sky-700 hover:bg-sky-50 rounded-lg">
-              Sign in / Create account
-            </Link>
+
+            {/* Sign in link only when not signed in */}
+            {!user && (
+              <Link href="/portal/login" onClick={closeMenu} className="block px-3 py-2 text-base font-semibold text-sky-700 hover:bg-sky-50 rounded-lg">
+                Sign in / Create account
+              </Link>
+            )}
           </div>
 
           <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
