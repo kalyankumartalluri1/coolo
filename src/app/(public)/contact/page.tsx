@@ -9,13 +9,15 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'Contact Coolo Support',
-  description: 'Get in touch with Coolo for AC service queries, corporate quotes, AMC packages, or technician support in Bangalore.',
+  description: 'Get in touch with Coolo for AC service queries, corporate quotes, AMC packages, or technician support across our 9 service cities.',
   path: '/contact',
 });
 
 export default async function ContactPage() {
   const account = await getPortalAccount();
   const profile = account?.profile ?? null;
+  // Profiles may store +91-prefixed numbers; the form input expects 10 digits.
+  const initialMobile = profile?.mobile ? profile.mobile.replace(/\D/g, '').slice(-10) : '';
 
   return (
     <div className="pt-8 pb-20">
@@ -28,7 +30,7 @@ export default async function ContactPage() {
             Contact Coolo Support
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-3">
-            Have questions regarding residential AC service, corporate quotes, AMC packages, or technician arrival? Our Bangalore team is here to assist.
+            Have questions regarding residential AC service, corporate quotes, AMC packages, or technician arrival? Our support team is here to assist across all 9 service cities.
           </p>
         </div>
 
@@ -98,7 +100,7 @@ export default async function ContactPage() {
             <ContactForm
               initialName={profile?.full_name ?? ''}
               initialEmail={profile?.email ?? ''}
-              initialMobile={''}
+              initialMobile={initialMobile}
             />
           </div>
         </div>

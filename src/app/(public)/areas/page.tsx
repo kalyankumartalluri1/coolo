@@ -7,8 +7,8 @@ import { CTASection } from '@/components/home/CTASection';
 import { createPageMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'AC Service Areas in Bangalore',
-  description: 'Check Coolo AC repair, installation and maintenance coverage across Bangalore service areas.',
+  title: 'AC Service Areas — 9 Cities and Growing',
+  description: 'Check Coolo AC repair, installation and maintenance coverage across Bangalore, Pune, Mumbai, Delhi NCR and other service cities.',
   path: '/areas',
 });
 
@@ -34,7 +34,8 @@ export default function AreasPage() {
           {ACTIVE_SERVICE_AREAS.map((area) => (
             <div
               key={area.id}
-              className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between"
+              id={area.areaName.toLowerCase().replace(/\s+/g, '-')}
+              className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between scroll-mt-24"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">

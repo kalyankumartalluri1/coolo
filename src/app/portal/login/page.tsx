@@ -3,7 +3,7 @@ import { LoginForm } from '@/components/portal/LoginForm';
 
 export const metadata: Metadata = {
   title: 'Sign in to Coolo',
-  robots: { index: false, follow: false },
+  robots: { index: false, follow: false, nocache: true },
 };
 
 export default async function PortalLoginPage({

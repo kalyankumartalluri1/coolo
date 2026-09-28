@@ -6,7 +6,7 @@ export const HowItWorks: React.FC = () => {
     {
       step: '01',
       title: 'Book in 30 Seconds',
-      description: 'Choose your AC service, select your Bangalore locality, and pick your preferred 2-hour arrival window.',
+      description: 'Choose your AC service, select your city, and pick your preferred 2-hour arrival window.',
       icon: Calendar,
     },
     {

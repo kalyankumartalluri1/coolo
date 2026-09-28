@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import { Phone, Wind, ChevronDown, LayoutDashboard } from 'lucide-react';
+import { LogOut, Phone, Wind, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
 import { Button } from '@/components/ui/Button';
 import { MobileNavigation } from '@/components/layout/MobileNavigation';
 import { getPortalAccount } from '@/lib/auth/portal';
+import { signOutAction } from '@/app/auth-actions';
 
 export const Header: React.FC = async () => {
   // Read session server-side — safe, cached per request via React cache()
@@ -34,8 +35,8 @@ export const Header: React.FC = async () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+          {/* Desktop Navigation — lg+ only; below lg the mobile drawer is used */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             <Link
               href="/"
               className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-sky-600 rounded-lg transition-colors"
@@ -101,10 +102,11 @@ export const Header: React.FC = async () => {
             </Link>
           </nav>
 
-          {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Desktop CTAs — lg+ only so the header never overflows at tablet widths */}
+          <div className="hidden lg:flex items-center gap-3">
             {user ? (
               /* Signed-in state */
+              <>
               <Link
                 href="/portal"
                 className="flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50 transition-colors group"
@@ -123,6 +125,19 @@ export const Header: React.FC = async () => {
                 </span>
                 <LayoutDashboard className="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-600 shrink-0" />
               </Link>
+
+              {/* Sign out — keeps the session state consistent across the whole site */}
+              <form action={signOutAction}>
+                <button
+                  type="submit"
+                  className="p-2 rounded-xl border border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 transition-colors"
+                  aria-label="Sign out"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </form>
+              </>
             ) : (
               /* Signed-out state */
               <Link

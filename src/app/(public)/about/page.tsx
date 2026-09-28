@@ -6,7 +6,7 @@ import { createPageMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
   title: 'About COOLO',
-  description: 'Learn about Coolo, Bangalore-based air and cooling services focused on clear diagnostics, technician accountability and transparent service.',
+  description: 'Learn about Coolo, the air and cooling services company headquartered in Bangalore and serving 9 cities with clear diagnostics, technician accountability and transparent service.',
   path: '/about',
 });
 
@@ -23,7 +23,7 @@ export default function AboutPage() {
             Cooling Service Built on Transparency & Quality
           </h1>
           <p className="text-slate-600 text-sm sm:text-base mt-4 leading-relaxed">
-            Coolo is a technology-enabled air and cooling solutions company founded in Bangalore. We are reimagining how homes and businesses maintain their climate comfort through verified workmanship, upfront diagnostics, and digital service records.
+            Coolo is a technology-enabled air and cooling solutions company founded in Bangalore and now serving 9 cities across India. We are reimagining how homes and businesses maintain their climate comfort through verified workmanship, upfront diagnostics, and digital service records.
           </p>
         </div>
 
@@ -77,7 +77,7 @@ export default function AboutPage() {
               From AC Service to Full Climate & Air Solutions
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Coolo begins with Bangalore residential and commercial AC maintenance, but our architecture is designed for full air management: ventilation, indoor air quality filtration, heat load balancing, and smart cooling systems.
+              Coolo began with Bangalore residential and commercial AC maintenance and now serves 9 cities, while our architecture is designed for full air management: ventilation, indoor air quality filtration, heat load balancing, and smart cooling systems.
             </p>
           </div>
 

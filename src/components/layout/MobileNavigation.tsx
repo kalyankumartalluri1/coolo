@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { LayoutDashboard, Menu, Phone, X } from 'lucide-react';
+import { LayoutDashboard, LogOut, Menu, Phone, X } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { SERVICES } from '@/lib/constants/services';
 import { Button } from '@/components/ui/Button';
+import { signOutAction } from '@/app/auth-actions';
 
 interface MobileNavigationProps {
   user: {
@@ -24,7 +25,7 @@ export function MobileNavigation({ user }: MobileNavigationProps) {
 
   return (
     <>
-      <div className="flex md:hidden items-center gap-2">
+      <div className="flex lg:hidden items-center gap-2">
         <a
           href={`tel:${BRAND.contact.phone}`}
           className="p-2 text-slate-700 rounded-lg border border-slate-200"
@@ -48,7 +49,7 @@ export function MobileNavigation({ user }: MobileNavigationProps) {
         <nav
           id="mobile-navigation-drawer"
           aria-label="Mobile navigation"
-          className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[80vh] overflow-y-auto"
+          className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg max-h-[80vh] overflow-y-auto"
         >
           {/* Signed-in user card */}
           {user && (
@@ -68,6 +69,20 @@ export function MobileNavigation({ user }: MobileNavigationProps) {
               </div>
               <LayoutDashboard className="w-4 h-4 text-sky-600 shrink-0 ml-auto" />
             </Link>
+          )}
+
+          {/* Sign out — keeps the session state consistent across the whole site */}
+          {user && (
+            <form action={signOutAction} className="pt-1">
+              <button
+                type="submit"
+                onClick={closeMenu}
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign out
+              </button>
+            </form>
           )}
 
           <div className="space-y-1">

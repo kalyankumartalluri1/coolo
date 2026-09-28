@@ -26,13 +26,13 @@ export const Footer: React.FC = () => {
               </div>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              Technology-enabled air and cooling solutions for homes and businesses. Transparent diagnostics, certified technicians, and verified digital service records across Bangalore.
+              Technology-enabled air and cooling solutions for homes and businesses. Transparent diagnostics, certified technicians, and verified digital service records across 9 cities, headquartered in Bangalore.
             </p>
 
             <div className="pt-2 space-y-2.5 text-xs text-slate-400">
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-sky-400 shrink-0" />
-                <span>Bangalore, Karnataka, India</span>
+                <span>Bangalore HQ · Serving 9 Cities Across India</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sky-400 shrink-0" />

@@ -3,7 +3,7 @@ export const BRAND = {
   legalName: 'Coolo Air & Cooling Solutions',
   tagline: 'Air & Cooling Solutions',
   headline: 'AC & Cooling Services at Your Doorstep',
-  subheadline: 'Book reliable AC repair, servicing, cleaning and installation from trusted local technicians in Bangalore.',
+  subheadline: 'Book reliable AC repair, servicing, cleaning and installation from trusted local technicians across Bangalore and 8 more cities.',
   domain: 'https://coolo.in',
   city: 'Bangalore',
   state: 'Karnataka',
@@ -39,5 +39,5 @@ export const BRAND = {
       icon: 'FileText',
     },
   ],
-  whatsappBookingMessage: 'Hi Coolo, I would like to book an AC service in Bangalore.',
+  whatsappBookingMessage: 'Hi Coolo, I would like to book an AC service.',
 } as const;

@@ -19,10 +19,11 @@ import { Card } from '@/components/ui/Card';
 interface BookingWizardProps {
   initialName?: string;
   initialEmail?: string;
+  initialMobile?: string;
   isSignedIn?: boolean;
 }
 
-function BookingFlowContent({ initialName = '', initialEmail = '', isSignedIn = false }: BookingWizardProps) {
+function BookingFlowContent({ initialName = '', initialEmail = '', initialMobile = '', isSignedIn = false }: BookingWizardProps) {
   const searchParams = useSearchParams();
   const initialService = searchParams.get('service') || 'ac-service';
   const initialArea = searchParams.get('area') || DEFAULT_SERVICE_AREA;
@@ -41,7 +42,7 @@ function BookingFlowContent({ initialName = '', initialEmail = '', isSignedIn = 
 
   // Pre-fill from signed-in profile
   const [customerName, setCustomerName] = useState(initialName);
-  const [customerMobile, setCustomerMobile] = useState('');
+  const [customerMobile, setCustomerMobile] = useState(initialMobile);
   const [customerEmail, setCustomerEmail] = useState(initialEmail);
   const [addressLine1, setAddressLine1] = useState('');
   const [addressLine2, setAddressLine2] = useState('');

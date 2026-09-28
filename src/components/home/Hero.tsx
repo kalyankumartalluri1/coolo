@@ -23,7 +23,7 @@ export const Hero: React.FC = async () => {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-sky-200/80 shadow-xs">
               <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-ping" />
               <span className="text-xs font-semibold text-sky-800">
-                Bangalore's Dedicated Air & Cooling Specialists
+                Bangalore HQ · Serving 9 Cities Across India
               </span>
             </div>
 
@@ -37,7 +37,7 @@ export const Hero: React.FC = async () => {
 
             {/* Supporting Description */}
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-              Book reliable AC repair, servicing, cleaning and installation from trusted local technicians. Upfront diagnostics, transparent pricing, and digital job reports across Bangalore.
+              Book reliable AC repair, servicing, cleaning and installation from trusted local technicians. Upfront diagnostics, transparent pricing, and digital job reports across 9 cities.
             </p>
 
             {/* Trust Indicators Chips */}
@@ -91,7 +91,7 @@ export const Hero: React.FC = async () => {
           <div className="md:col-span-1 lg:col-span-6">
             <QuickBookingWidget
               initialName={profile?.full_name ?? ''}
-              initialMobile={''}
+              initialMobile={profile?.mobile ?? ''}
             />
           </div>
         </div>

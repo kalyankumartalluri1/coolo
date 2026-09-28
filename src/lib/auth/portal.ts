@@ -13,6 +13,7 @@ export interface PortalAccount {
     role: UserRole;
     full_name: string;
     email: string | null;
+    mobile: string | null;
   };
 }
 
@@ -24,7 +25,7 @@ export const getPortalAccount = cache(async (): Promise<PortalAccount | null> =>
 
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
-    .select('id, role, full_name, email')
+    .select('id, role, full_name, email, mobile')
     .eq('id', user.id)
     .maybeSingle();
 

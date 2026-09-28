@@ -6,8 +6,8 @@ import { CTASection } from '@/components/home/CTASection';
 import { createPageMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = createPageMetadata({
-  title: 'AC and Cooling Services in Bangalore',
-  description: 'Explore Coolo AC repair, regular servicing, deep cleaning, gas charging, installation and commercial HVAC services in Bangalore.',
+  title: 'AC and Cooling Services in Bangalore & 8 More Cities',
+  description: 'Explore Coolo AC repair, regular servicing, deep cleaning, gas charging, installation and commercial HVAC services across 9 cities.',
   path: '/services',
 });
 
@@ -22,7 +22,7 @@ export default function ServicesPage() {
           Complete Air & Cooling Solutions
         </h1>
         <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto mt-3">
-          Engineered cooling services for all AC types: Split, Window, Cassette, and Commercial HVAC units across Bangalore.
+          Engineered cooling services for all AC types: Split, Window, Cassette, and Commercial HVAC units across our 9 service cities.
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 
-export const alt = 'COOLO — Air and cooling solutions in Bangalore';
+export const alt = 'COOLO — Air and cooling solutions across 9 Indian cities';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -53,7 +53,7 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 21, fontWeight: 700 }}>Serving Bangalore</span>
+          <span style={{ fontSize: 21, fontWeight: 700 }}>Serving 9 Cities Across India</span>
           <span style={{ fontSize: 18, color: '#bae6fd' }}>coolo.in</span>
         </div>
       </div>

@@ -9,13 +9,13 @@ import { BRAND } from '@/lib/constants/brand';
 import { createPageMetadata } from '@/lib/seo';
 
 export const metadata = createPageMetadata({
-  title: 'AC Repair and Service in Bangalore',
-  description: 'Book trusted AC repair, servicing, deep cleaning and installation in Bangalore with transparent diagnostics and convenient scheduling.',
+  title: 'AC Repair and Service in Bangalore & 8 More Cities',
+  description: 'Book trusted AC repair, servicing, deep cleaning and installation across Bangalore, Pune, Mumbai, Delhi NCR and more with transparent diagnostics and convenient scheduling.',
   path: '/',
 });
 
 export default function HomePage() {
-  // Local Business Structured Data for Bangalore Local SEO
+  // Local Business Structured Data for Local SEO (HQ: Bangalore, multi-city coverage)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -28,7 +28,7 @@ export default function HomePage() {
         telephone: BRAND.contact.phone,
         email: BRAND.contact.email,
         description:
-          'Reliable AC repair, servicing, deep cleaning, and cooling solutions in Bangalore, Karnataka.',
+          'Reliable AC repair, servicing, deep cleaning, and cooling solutions across 9 cities, headquartered in Bangalore, Karnataka.',
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Bangalore',
@@ -50,7 +50,17 @@ export default function HomePage() {
           },
         ],
         priceRange: '₹399 - ₹4999',
-        areaServed: { '@type': 'City', name: 'Bangalore' },
+        areaServed: [
+          { '@type': 'City', name: 'Bangalore' },
+          { '@type': 'City', name: 'Pune' },
+          { '@type': 'City', name: 'Hyderabad' },
+          { '@type': 'City', name: 'Chennai' },
+          { '@type': 'City', name: 'Mumbai' },
+          { '@type': 'City', name: 'Delhi NCR' },
+          { '@type': 'City', name: 'Ahmedabad' },
+          { '@type': 'City', name: 'Jaipur' },
+          { '@type': 'City', name: 'Kochi' },
+        ],
       },
       {
         '@type': 'FAQPage',

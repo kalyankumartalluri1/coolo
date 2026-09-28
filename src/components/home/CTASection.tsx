@@ -24,13 +24,13 @@ export const CTASection: React.FC = async () => {
 
           <div className="relative z-10 max-w-2xl space-y-4">
             <span className="inline-block px-3 py-1 rounded-full bg-white/15 text-sky-100 text-xs font-semibold backdrop-blur-sm">
-              Bangalore On-Demand AC Specialists
+              Multi-City On-Demand AC Specialists
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
               Ready for Clean, Powerful Cooling?
             </h2>
             <p className="text-sm sm:text-base text-sky-100/90 leading-relaxed">
-              Book your AC service or repair in under a minute. Verified technicians, upfront estimates, and convenient scheduling slots across Bangalore.
+              Book your AC service or repair in under a minute. Verified technicians, upfront estimates, and convenient scheduling slots across 9 cities.
             </p>
 
             <div className="pt-4 flex flex-wrap items-center gap-3">

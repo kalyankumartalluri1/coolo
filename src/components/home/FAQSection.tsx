@@ -18,9 +18,9 @@ export const FAQS = [
       'We service Split, Window, Cassette, and Multi-Split inverter and fixed-speed ACs from all major brands including Daikin, Voltas, LG, Samsung, Hitachi, Blue Star, Carrier, Panasonic, Godrej, Mitsubishi, and others.',
   },
   {
-    question: 'How quickly can a technician arrive at my home in Bangalore?',
+    question: 'How quickly can a technician arrive at my home?',
     answer:
-      'You can select any available 2-hour window during our operating hours (8:00 AM to 9:00 PM). In many Bangalore localities like Indiranagar, Whitefield, HSR Layout, and Koramangala, same-day slots are frequently available.',
+      'You can select any available 2-hour window during our operating hours (8:00 AM to 9:00 PM). In many localities across our service cities — including Indiranagar, Whitefield, HSR Layout, and Koramangala in Bangalore — same-day slots are frequently available.',
   },
   {
     question: 'What happens if my AC requires replacement parts?',

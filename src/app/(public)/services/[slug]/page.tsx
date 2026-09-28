@@ -48,7 +48,7 @@ export async function generateMetadata({
   }
 
   return createPageMetadata({
-    title: `${service.name} in Bangalore`,
+    title: `${service.name} — Bangalore & 8 More Cities`,
     description: service.shortDescription,
     path: `/services/${service.slug}`,
   });
@@ -104,7 +104,17 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           url: SITE_URL,
           telephone: BRAND.contact.phone,
         },
-        areaServed: { '@type': 'City', name: 'Bangalore' },
+        areaServed: [
+          { '@type': 'City', name: 'Bangalore' },
+          { '@type': 'City', name: 'Pune' },
+          { '@type': 'City', name: 'Hyderabad' },
+          { '@type': 'City', name: 'Chennai' },
+          { '@type': 'City', name: 'Mumbai' },
+          { '@type': 'City', name: 'Delhi NCR' },
+          { '@type': 'City', name: 'Ahmedabad' },
+          { '@type': 'City', name: 'Jaipur' },
+          { '@type': 'City', name: 'Kochi' },
+        ],
       },
       {
         '@type': 'BreadcrumbList',
@@ -145,7 +155,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-100/70 px-2.5 py-0.5 rounded-full">
-                  Bangalore On-Site Service
+                  On-Site Service · 9 Cities
                 </span>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mt-1">
                   {service.name}
@@ -312,7 +322,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   Book {service.name}
                 </h3>
                 <p className="text-xs text-slate-500 mb-4">
-                  Serving all major Bangalore zones. Select your 2-hour slot with zero upfront payment.
+                  Serving all 9 service cities. Select your 2-hour slot with zero upfront payment.
                 </p>
 
                 <div className="space-y-3">
@@ -326,7 +336,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   </Button>
                   <a
                     href={`https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
-                      `Hi Coolo, I would like to book ${service.name} in Bangalore.`
+                      `Hi Coolo, I would like to book ${service.name}.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
