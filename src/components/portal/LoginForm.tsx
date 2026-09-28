@@ -68,16 +68,29 @@ export function LoginForm({ confirmationError = false }: { confirmationError?: b
     setMessage('');
 
     try {
+      const redirectTo = `${window.location.origin}/auth/callback?next=%2Fportal`;
       const { error: oauthError } = await createClient().auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=%2Fportal`,
+          redirectTo,
+          queryParams: {
+            // Request a refresh token so the session survives beyond one hour
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       });
-      if (!oauthError) return;
-      setError('Google sign-in is unavailable right now. Please try email sign-in or contact support.');
-    } catch {
-      setError('Google sign-in is unavailable right now. Please try email sign-in or contact support.');
+      // signInWithOAuth redirects the browser on success — if we are still
+      // here, either an error was returned or the redirect was blocked.
+      if (!oauthError) {
+        // Redirect may be pending (some browsers are slow) — keep spinner up
+        return;
+      }
+      // Show the real Supabase error so it's actionable
+      setError(`Google sign-in failed: ${oauthError.message}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unexpected error';
+      setError(`Google sign-in failed: ${message}`);
     }
     setPending(false);
   }
