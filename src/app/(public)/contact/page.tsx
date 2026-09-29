@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Clock, MessageSquare } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
+import { getSiteSettings } from '@/lib/catalog';
 import { Card } from '@/components/ui/Card';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { getPortalAccount } from '@/lib/auth/portal';
@@ -14,7 +15,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default async function ContactPage() {
-  const account = await getPortalAccount();
+  const [account, settings] = await Promise.all([getPortalAccount(), getSiteSettings()]);
   const profile = account?.profile ?? null;
   // Profiles may store +91-prefixed numbers; the form input expects 10 digits.
   const initialMobile = profile?.mobile ? profile.mobile.replace(/\D/g, '').slice(-10) : '';
@@ -56,8 +57,8 @@ export default async function ContactPage() {
                   <Phone className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold text-slate-900 block">Phone Call Support</span>
-                    <a href={`tel:${BRAND.contact.phone}`} className="text-sky-600 hover:underline">
-                      {BRAND.contact.phoneDisplay}
+                    <a href={`tel:${settings.phone}`} className="text-sky-600 hover:underline">
+                      {settings.phoneDisplay}
                     </a>
                   </div>
                 </div>
@@ -66,8 +67,8 @@ export default async function ContactPage() {
                   <Mail className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold text-slate-900 block">Email Inquiries</span>
-                    <a href={`mailto:${BRAND.contact.email}`} className="text-sky-600 hover:underline">
-                      {BRAND.contact.email}
+                    <a href={`mailto:${settings.email}`} className="text-sky-600 hover:underline">
+                      {settings.email}
                     </a>
                   </div>
                 </div>
@@ -76,14 +77,14 @@ export default async function ContactPage() {
                   <Clock className="w-4 h-4 text-sky-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold text-slate-900 block">Working Hours</span>
-                    <span>{BRAND.contact.workingHours}</span>
+                    <span>{settings.workingHours}</span>
                   </div>
                 </div>
               </div>
 
               <div className="mt-6 pt-5 border-t border-slate-100">
                 <a
-                  href={`https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(BRAND.whatsappBookingMessage)}`}
+                  href={`https://wa.me/${settings.whatsapp.replace('+', '')}?text=${encodeURIComponent(BRAND.whatsappBookingMessage)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors shadow-xs"

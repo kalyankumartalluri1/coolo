@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { Phone, MessageCircle, CalendarCheck, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
 import { getPortalAccount } from '@/lib/auth/portal';
+import { getSiteSettings } from '@/lib/catalog';
 
 export const MobileActionBar: React.FC = async () => {
-  const account = await getPortalAccount();
+  const [account, settings] = await Promise.all([getPortalAccount(), getSiteSettings()]);
   const isSignedIn = Boolean(account);
 
-  const whatsappUrl = `https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
+  const whatsappUrl = `https://wa.me/${settings.whatsapp.replace('+', '')}?text=${encodeURIComponent(
     BRAND.whatsappBookingMessage
   )}`;
 
@@ -17,7 +18,7 @@ export const MobileActionBar: React.FC = async () => {
       <div className="grid grid-cols-3 gap-2 max-w-md mx-auto">
         {/* Call */}
         <a
-          href={`tel:${BRAND.contact.phone}`}
+          href={`tel:${settings.phone}`}
           className="flex flex-col items-center justify-center py-1.5 px-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors active:scale-95"
           aria-label="Call Coolo"
         >

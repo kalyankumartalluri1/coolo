@@ -1,11 +1,12 @@
 import React from 'react';
 import { Phone, ShieldCheck, CheckCircle2, Clock, FileText, Sparkles, Snowflake } from 'lucide-react';
-import { BRAND } from '@/lib/constants/brand';
+import { getSiteSettings, getServiceCatalog } from '@/lib/catalog';
 import { Button } from '@/components/ui/Button';
 import { QuickBookingWidget } from './QuickBookingWidget';
 import { getPortalAccount } from '@/lib/auth/portal';
 
 export const Hero: React.FC = async () => {
+  const [settings, catalog] = await Promise.all([getSiteSettings(), getServiceCatalog()]);
   const account = await getPortalAccount();
   const profile = account?.profile ?? null;
 
@@ -66,11 +67,11 @@ export const Hero: React.FC = async () => {
                 Book a Service
               </Button>
               <a
-                href={`tel:${BRAND.contact.phone}`}
+                href={`tel:${settings.phone}`}
                 className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base border border-slate-300 shadow-xs hover:border-slate-400 transition-all active:scale-95"
               >
                 <Phone className="w-4 h-4 text-sky-600" />
-                <span>Call {BRAND.contact.phoneDisplay}</span>
+                <span>Call {settings.phoneDisplay}</span>
               </a>
             </div>
 
@@ -92,6 +93,7 @@ export const Hero: React.FC = async () => {
             <QuickBookingWidget
               initialName={profile?.full_name ?? ''}
               initialMobile={profile?.mobile ?? ''}
+              services={catalog}
             />
           </div>
         </div>

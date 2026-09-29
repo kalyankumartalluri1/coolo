@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { requirePortalAccount } from '@/lib/auth/portal';
 import type { Database } from '@/lib/types/database.types';
 import { PortalDashboard } from '@/components/portal/PortalDashboard';
+import { getServiceCatalog, getSiteSettings } from '@/lib/catalog';
 
 export const metadata: Metadata = {
   title: 'Your Coolo workspace',
@@ -130,6 +131,11 @@ export default async function PortalPage() {
     }
   }
 
+  // Operator-managed catalog pricing and public contact settings (super admin only).
+  const [catalog, settings] = account.profile.role === 'SUPER_ADMIN'
+    ? await Promise.all([getServiceCatalog(), getSiteSettings()])
+    : [null, null];
+
   const bookingIds = bookings.map((booking) => booking.id);
   if (bookingIds.length) {
     const [estimateResult, recordResult, paymentResult, reviewResult, historyResult] = await Promise.all([
@@ -171,6 +177,8 @@ export default async function PortalPage() {
       reviews={reviews}
       bookingHistory={bookingHistory}
       notifications={notificationData ?? []}
+      catalog={catalog}
+      settings={settings}
     />
   );
 }

@@ -9,6 +9,8 @@ import {
   Clock3,
   FileText,
   Headset,
+  IndianRupee,
+  Settings2,
   ShieldCheck,
   Star,
   UserPlus,
@@ -17,6 +19,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import type { Database, UserRole } from '@/lib/types/database.types';
+import type { ServiceCatalogEntry, SiteSettings } from '@/lib/catalog';
 import {
   assignTechnician,
   completeServiceJob,
@@ -30,6 +33,8 @@ import {
   submitServiceEstimate,
   updateBookingStatus,
   updateContactStatus,
+  updateServicePricing,
+  updateSiteSettings,
   updateUserRole,
 } from '@/app/portal/actions';
 
@@ -210,7 +215,7 @@ function BookingCard({ booking, role, technicians, assignment, estimates, servic
   );
 }
 
-export function PortalDashboard({ account, bookings, contacts, users, technicians, assignmentByBooking, technicianReady, estimates, serviceRecords, payments, reviews, bookingHistory, notifications }: {
+export function PortalDashboard({ account, bookings, contacts, users, technicians, assignmentByBooking, technicianReady, estimates, serviceRecords, payments, reviews, bookingHistory, notifications, catalog, settings }: {
   account: Account;
   bookings: Booking[];
   contacts: ContactRequest[];
@@ -224,6 +229,8 @@ export function PortalDashboard({ account, bookings, contacts, users, technician
   reviews: Review[];
   bookingHistory: BookingHistory[];
   notifications: Notification[];
+  catalog: ServiceCatalogEntry[] | null;
+  settings: SiteSettings | null;
 }) {
   const details = roleDetails[account.role];
   const activeBookings = bookings.filter((booking) => !['COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(booking.status)).length;
@@ -302,6 +309,37 @@ export function PortalDashboard({ account, bookings, contacts, users, technician
           <form action={inviteStaffMember} className="grid gap-3 border-b border-slate-100 bg-slate-50/70 p-5 sm:grid-cols-[1fr_1fr_auto_auto] sm:items-end sm:px-6"><label className="text-xs font-semibold text-slate-600">Staff name<input name="fullName" required minLength={2} maxLength={150} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /></label><label className="text-xs font-semibold text-slate-600">Work email<input name="email" required type="email" autoComplete="email" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /></label><label className="text-xs font-semibold text-slate-600">Role<select name="role" defaultValue="TECHNICIAN" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"><option value="TECHNICIAN">Technician</option><option value="ADMIN">Administrator</option><option value="SUPER_ADMIN">Super administrator</option></select></label><button className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white"><UserPlus className="h-4 w-4" />Invite staff</button><p className="text-xs text-slate-500 sm:col-span-4">Invitees receive a secure email link to set their own password. No shared credentials are created.</p></form>
           {users.map((user) => <article key={user.id} className="grid gap-3 border-b border-slate-100 px-5 py-4 last:border-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6"><div className="min-w-0"><p className="truncate text-sm font-semibold text-slate-900">{user.full_name}{user.id === account.id ? ' (you)' : ''}</p><p className="mt-1 truncate text-xs text-slate-500">{user.email ?? 'No email on profile'}</p></div>{user.id === account.id ? <span className="text-xs font-semibold text-sky-700">Super administrator</span> : <form action={updateUserRole} className="flex items-center gap-2"><input type="hidden" name="userId" value={user.id} /><select name="role" defaultValue={user.role} aria-label={`Role for ${user.full_name}`} className="rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs">{roleOptions.map((role) => <option key={role} value={role}>{role.replace('_', ' ')}</option>)}</select><button className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50">Save role</button></form>}</article>)}
           {!users.length && <p className="px-6 py-9 text-center text-sm text-slate-500">No user profiles found.</p>}
+        </section>}
+
+        {account.role === 'SUPER_ADMIN' && catalog && <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-900/[0.02]">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6"><div><h2 className="font-bold text-slate-900">Service pricing management</h2><p className="mt-1 text-xs text-slate-500">Set the “starting from” price for each service. Changes appear across the public website immediately after saving.</p></div><IndianRupee className="h-5 w-5 text-slate-400" /></div>
+          <form action={updateServicePricing} className="p-5 sm:px-6">
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {catalog.map((entry) => <label key={entry.slug} className="rounded-xl border border-slate-200 p-3">
+                <span className="block text-xs font-semibold text-slate-700">{entry.name}</span>
+                <span className="mt-0.5 block text-[10px] text-slate-400">Current: ₹{entry.startingPrice}{entry.dbPrice === null ? ' (default)' : ''}</span>
+                <input type="number" min="0" step="0.01" max="10000000" name={`price_${entry.slug}`} aria-label={`New price for ${entry.name}`} placeholder="Leave empty to keep" className="mt-2 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                <input type="hidden" name="serviceSlug" value={entry.slug} />
+              </label>)}
+            </div>
+            <div className="mt-4 flex items-center gap-3">
+              <button className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white hover:bg-sky-800">Save prices</button>
+              <span className="text-[11px] text-slate-400">Enter a new value only for services you want to change.</span>
+            </div>
+          </form>
+        </section>}
+
+        {account.role === 'SUPER_ADMIN' && settings && <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-900/[0.02]">
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6"><div><h2 className="font-bold text-slate-900">Public contact settings</h2><p className="mt-1 text-xs text-slate-500">Phone numbers, emails, and working hours shown across the website. Empty a field to fall back to the built-in default.</p></div><Settings2 className="h-5 w-5 text-slate-400" /></div>
+          <form action={updateSiteSettings} className="grid gap-3 border-t-0 p-5 sm:grid-cols-2 xl:grid-cols-3 sm:px-6">
+            <label className="text-xs font-semibold text-slate-600">Primary phone (dialable)<input name="phone" defaultValue={settings.phone} inputMode="tel" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /><span className="mt-1 block text-[10px] font-normal text-slate-400">Digits with optional + prefix</span></label>
+            <label className="text-xs font-semibold text-slate-600">Phone display text<input name="phoneDisplay" defaultValue={settings.phoneDisplay} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /><span className="mt-1 block text-[10px] font-normal text-slate-400">e.g. +91 99008 19475</span></label>
+            <label className="text-xs font-semibold text-slate-600">WhatsApp number<input name="whatsapp" defaultValue={settings.whatsapp} inputMode="tel" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /><span className="mt-1 block text-[10px] font-normal text-slate-400">Digits with optional + prefix</span></label>
+            <label className="text-xs font-semibold text-slate-600">General email<input name="email" defaultValue={settings.email} type="email" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /></label>
+            <label className="text-xs font-semibold text-slate-600">Support email<input name="supportEmail" defaultValue={settings.supportEmail} type="email" className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /></label>
+            <label className="text-xs font-semibold text-slate-600">Working hours<input name="workingHours" defaultValue={settings.workingHours} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" /></label>
+            <div className="sm:col-span-2 xl:col-span-3"><button className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white hover:bg-sky-800">Save contact settings</button></div>
+          </form>
         </section>}
 
         <footer className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 pt-5 text-xs text-slate-400"><span>Coolo role-based workspace</span><span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5" /> Protected by Supabase authentication and row-level security</span></footer>

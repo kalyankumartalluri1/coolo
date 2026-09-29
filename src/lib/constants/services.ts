@@ -1,5 +1,7 @@
 import { ServiceItem } from '../types/coolo.types';
 
+export type { ServiceItem };
+
 export const SERVICES: ServiceItem[] = [
   {
     id: 'srv-repair',

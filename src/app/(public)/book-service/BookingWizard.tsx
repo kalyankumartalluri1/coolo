@@ -11,19 +11,22 @@ import {
   ShieldCheck,
   LayoutDashboard,
 } from 'lucide-react';
-import { SERVICES } from '@/lib/constants/services';
+import { SERVICES, type ServiceItem } from '@/lib/constants/services';
 import { ACTIVE_SERVICE_AREAS, DEFAULT_SERVICE_AREA, TIME_SLOTS, AC_TYPES, AC_BRANDS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+
+type CatalogEntry = ServiceItem;
 
 interface BookingWizardProps {
   initialName?: string;
   initialEmail?: string;
   initialMobile?: string;
   isSignedIn?: boolean;
+  catalog?: CatalogEntry[];
 }
 
-function BookingFlowContent({ initialName = '', initialEmail = '', initialMobile = '', isSignedIn = false }: BookingWizardProps) {
+function BookingFlowContent({ initialName = '', initialEmail = '', initialMobile = '', isSignedIn = false, catalog = SERVICES }: BookingWizardProps) {
   const searchParams = useSearchParams();
   const initialService = searchParams.get('service') || 'ac-service';
   const initialArea = searchParams.get('area') || DEFAULT_SERVICE_AREA;
@@ -55,7 +58,7 @@ function BookingFlowContent({ initialName = '', initialEmail = '', initialMobile
 
   const [confirmedBookingId, setConfirmedBookingId] = useState('');
 
-  const activeServiceObj = SERVICES.find((s) => s.slug === selectedService) || SERVICES[0];
+  const activeServiceObj = catalog.find((s) => s.slug === selectedService) || catalog[0];
 
   const handleNext = () => {
     setErrorMessage('');
@@ -183,7 +186,7 @@ function BookingFlowContent({ initialName = '', initialEmail = '', initialMobile
               <p className="text-xs text-slate-500 mt-1">Select the air and cooling solution required for your unit.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {SERVICES.map((service) => {
+              {catalog.map((service) => {
                 const isSelected = selectedService === service.slug;
                 return (
                   <div

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Phone, CalendarCheck, Wind, MessageCircle, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
+import { getSiteSettings } from '@/lib/catalog';
 import { Button } from '@/components/ui/Button';
 import { getPortalAccount } from '@/lib/auth/portal';
 
@@ -9,7 +10,8 @@ export const CTASection: React.FC = async () => {
   const account = await getPortalAccount();
   const isSignedIn = Boolean(account);
 
-  const whatsappUrl = `https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
+  const settings = await getSiteSettings();
+  const whatsappUrl = `https://wa.me/${settings.whatsapp.replace('+', '')}?text=${encodeURIComponent(
     BRAND.whatsappBookingMessage
   )}`;
 
@@ -66,11 +68,11 @@ export const CTASection: React.FC = async () => {
               </a>
 
               <a
-                href={`tel:${BRAND.contact.phone}`}
+                href={`tel:${settings.phone}`}
                 className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm transition-all backdrop-blur-sm border border-white/20"
               >
                 <Phone className="w-4 h-4" />
-                <span>{BRAND.contact.phoneDisplay}</span>
+                <span>{settings.phoneDisplay}</span>
               </a>
             </div>
           </div>

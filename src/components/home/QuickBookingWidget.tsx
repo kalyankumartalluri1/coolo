@@ -3,9 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Clock, LayoutDashboard, MapPin, Wrench, User, Phone, CheckCircle2, ArrowRight } from 'lucide-react';
-import { SERVICES } from '@/lib/constants/services';
+import { SERVICES, type ServiceItem } from '@/lib/constants/services';
 import { ACTIVE_SERVICE_AREAS, DEFAULT_SERVICE_AREA, TIME_SLOTS } from '@/lib/constants/areas';
 import { Button } from '@/components/ui/Button';
+
+interface QuickBookingWidgetProps {
+  initialName?: string;
+  initialMobile?: string;
+  services?: ServiceItem[];
+}
 
 interface BookingSuccessModalProps {
   isOpen: boolean;
@@ -118,6 +124,7 @@ interface QuickBookingWidgetProps {
 export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
   initialName = '',
   initialMobile = '',
+  services = SERVICES,
 }) => {
   const today = new Date().toISOString().split('T')[0];
 
@@ -184,7 +191,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
         throw new Error(data.error || 'Failed to submit booking request.');
       }
 
-      const selectedService = SERVICES.find((s) => s.slug === serviceSlug);
+      const selectedService = services.find((s) => s.slug === serviceSlug);
 
       setSuccessModalData({
         bookingNumber: data.bookingNumber,
@@ -247,7 +254,7 @@ export const QuickBookingWidget: React.FC<QuickBookingWidgetProps> = ({
                 onChange={(e) => setServiceSlug(e.target.value)}
                 className="w-full h-11 px-3.5 rounded-xl border border-slate-200 text-sm text-slate-800 bg-slate-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-colors"
               >
-                {SERVICES.map((s) => (
+                {services.map((s) => (
                   <option key={s.slug} value={s.slug}>{s.name} (from ₹{s.startingPrice})</option>
                 ))}
               </select>

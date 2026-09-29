@@ -2,10 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import { Wind, Phone, Mail, MapPin, ShieldCheck, Clock } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
-import { SERVICES } from '@/lib/constants/services';
+import { getServiceCatalog, getSiteSettings } from '@/lib/catalog';
 import { ACTIVE_SERVICE_AREAS } from '@/lib/constants/areas';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC = async () => {
+  const [catalog, settings] = await Promise.all([getServiceCatalog(), getSiteSettings()]);
   return (
     <footer className="bg-slate-950 text-slate-300 pt-16 pb-24 md:pb-12 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,19 +37,19 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sky-400 shrink-0" />
-                <a href={`tel:${BRAND.contact.phone}`} className="hover:text-white transition-colors">
-                  {BRAND.contact.phoneDisplay}
+                <a href={`tel:${settings.phone}`} className="hover:text-white transition-colors">
+                  {settings.phoneDisplay}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sky-400 shrink-0" />
-                <a href={`mailto:${BRAND.contact.email}`} className="hover:text-white transition-colors">
-                  {BRAND.contact.email}
+                <a href={`mailto:${settings.email}`} className="hover:text-white transition-colors">
+                  {settings.email}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Clock className="w-4 h-4 text-sky-400 shrink-0" />
-                <span>{BRAND.contact.workingHours}</span>
+                <span>{settings.workingHours}</span>
               </div>
             </div>
           </div>
@@ -59,7 +60,7 @@ export const Footer: React.FC = () => {
               Cooling Services
             </h4>
             <ul className="space-y-2 text-xs">
-              {SERVICES.map((s) => (
+              {catalog.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}

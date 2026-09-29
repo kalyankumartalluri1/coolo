@@ -6,6 +6,7 @@ import { ServiceAreasPreview } from '@/components/home/ServiceAreasPreview';
 import { FAQS, FAQSection } from '@/components/home/FAQSection';
 import { CTASection } from '@/components/home/CTASection';
 import { BRAND } from '@/lib/constants/brand';
+import { getSiteSettings } from '@/lib/catalog';
 import { createPageMetadata } from '@/lib/seo';
 
 export const metadata = createPageMetadata({
@@ -14,8 +15,9 @@ export const metadata = createPageMetadata({
   path: '/',
 });
 
-export default function HomePage() {
+export default async function HomePage() {
   // Local Business Structured Data for Local SEO (HQ: Bangalore, multi-city coverage)
+  const settings = await getSiteSettings();
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -25,8 +27,8 @@ export default function HomePage() {
         name: BRAND.name,
         legalName: BRAND.legalName,
         url: 'https://coolo.in',
-        telephone: BRAND.contact.phone,
-        email: BRAND.contact.email,
+        telephone: settings.phone,
+        email: settings.email,
         description:
           'Reliable AC repair, servicing, deep cleaning, and cooling solutions across 9 cities, headquartered in Bangalore, Karnataka.',
         address: {

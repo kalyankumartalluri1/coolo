@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { LogOut, Phone, Wind, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { BRAND } from '@/lib/constants/brand';
-import { SERVICES } from '@/lib/constants/services';
+import { getServiceCatalog, getSiteSettings } from '@/lib/catalog';
 import { Button } from '@/components/ui/Button';
 import { MobileNavigation } from '@/components/layout/MobileNavigation';
 import { getPortalAccount } from '@/lib/auth/portal';
@@ -10,7 +10,7 @@ import { signOutAction } from '@/app/auth-actions';
 
 export const Header: React.FC = async () => {
   // Read session server-side — safe, cached per request via React cache()
-  const account = await getPortalAccount();
+  const [account, catalog, settings] = await Promise.all([getPortalAccount(), getServiceCatalog(), getSiteSettings()]);
   const user = account?.profile ?? null;
 
   return (
@@ -56,7 +56,7 @@ export const Header: React.FC = async () => {
 
               <div className="hidden group-hover:block group-focus-within:block absolute left-0 top-full pt-2 w-72">
                 <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-2 space-y-1">
-                  {SERVICES.slice(0, 6).map((service) => (
+                  {catalog.slice(0, 6).map((service) => (
                     <Link
                       key={service.slug}
                       href={`/services/${service.slug}`}
@@ -149,11 +149,11 @@ export const Header: React.FC = async () => {
             )}
 
             <a
-              href={`tel:${BRAND.contact.phone}`}
+              href={`tel:${settings.phone}`}
               className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-sky-600 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-sky-600" />
-              <span>{BRAND.contact.phoneDisplay}</span>
+              <span>{settings.phoneDisplay}</span>
             </a>
 
             <Button href="/book-service" size="sm" variant="primary">

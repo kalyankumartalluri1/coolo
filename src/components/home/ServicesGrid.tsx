@@ -12,7 +12,7 @@ import {
   ArrowRight,
   Check,
 } from 'lucide-react';
-import { SERVICES } from '@/lib/constants/services';
+import { getServiceCatalog } from '@/lib/catalog';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 
@@ -41,7 +41,8 @@ const getServiceIcon = (iconName: string) => {
   }
 };
 
-export const ServicesGrid: React.FC = () => {
+export const ServicesGrid: React.FC = async () => {
+  const catalog = await getServiceCatalog();
   return (
     <section className="py-20 bg-slate-50/50" id="services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +61,7 @@ export const ServicesGrid: React.FC = () => {
 
         {/* Services Grid (8 cards) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SERVICES.map((service) => (
+          {catalog.map((service) => (
             <Card
               key={service.slug}
               hoverEffect

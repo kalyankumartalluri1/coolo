@@ -287,3 +287,105 @@ export async function updateUserRole(formData: FormData) {
   if (error) throw new Error('The user role could not be changed.');
   revalidatePath('/portal');
 }
+
+const MAX_PRICE = 10_000_000;
+
+function parsePriceInput(raw: string): number | null {
+  if (raw.trim() === '') return null;
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value < 0 || value > MAX_PRICE) return null;
+  return Math.round(value * 100) / 100;
+}
+
+/**
+ * Super admins set the "starting from" price for each service. Prices are stored
+ * in the services table and rendered across the public site; leaving a field
+ * empty keeps the current price.
+ */
+export async function updateServicePricing(formData: FormData) {
+  const account = await requirePortalAccount(['SUPER_ADMIN']);
+  const supabase = await createClient();
+
+  const slugs = formData.getAll('serviceSlug').map(String);
+  let updated = 0;
+  for (const slug of slugs) {
+    const raw = String(formData.get(`price_${slug}`) ?? '');
+    if (!raw.trim()) continue;
+    const price = parsePriceInput(raw);
+    if (price === null) throw new Error(`Invalid price for ${slug}. Enter a number between 0 and 1,00,00,000.`);
+    // .select() makes RLS-filtered updates visible: a silent policy no-op returns
+    // zero rows instead of pretending the write succeeded.
+    const { data, error } = await supabase
+      .from('services')
+      .update({ starting_price: price } as never)
+      .eq('slug', slug)
+      .select('id');
+    if (error) throw new Error(`The price for ${slug} could not be saved. Verify the catalog table and try again.`);
+    if (!data?.length) throw new Error(`The price for ${slug} was not saved. The database policy is blocking catalog updates — run the pending site_settings migration as an operator, then retry.`);
+    updated += 1;
+  }
+  if (updated === 0) throw new Error('No price changes were submitted.');
+  void account;
+  revalidatePath('/', 'layout');
+}
+
+function normalizePhone(raw: string): string | null {
+  const cleaned = raw.replace(/[\s()-]/g, '');
+  if (!cleaned) return '';
+  return /^\+?\d{10,14}$/.test(cleaned) ? cleaned : null;
+}
+
+/**
+ * Super admins manage the public contact details (phones, WhatsApp, emails,
+ * working hours). Values live in site_settings and override the compiled
+ * defaults on every public page. Empty input removes an override.
+ */
+export async function updateSiteSettings(formData: FormData) {
+  const account = await requirePortalAccount(['SUPER_ADMIN']);
+  const supabase = await createClient();
+
+  const phoneFields: Array<{ key: string; field: string }> = [
+    { key: 'contact.phone', field: 'phone' },
+    { key: 'contact.phone_display', field: 'phoneDisplay' },
+    { key: 'contact.whatsapp', field: 'whatsapp' },
+  ];
+
+  const updates: Array<{ key: string; value: string }> = [];
+  const removals: string[] = [];
+
+  for (const { key, field } of phoneFields) {
+    const raw = String(formData.get(field) ?? '').trim();
+    if (!raw) { removals.push(key); continue; }
+    const normalized = normalizePhone(raw);
+    if (normalized === null) throw new Error(`Invalid phone number for ${field}. Use digits with an optional + prefix.`);
+    if (normalized === '') { removals.push(key); continue; }
+    updates.push({ key, value: normalized });
+  }
+
+  for (const field of ['email', 'supportEmail'] as const) {
+    const raw = String(formData.get(field) ?? '').trim();
+    if (!raw) { removals.push(`contact.${field === 'email' ? 'email' : 'support_email'}`); continue; }
+    if (!/^\S+@\S+\.\S+$/.test(raw) || raw.length > 200) throw new Error(`Invalid email address for ${field}.`);
+    updates.push({ key: `contact.${field === 'email' ? 'email' : 'support_email'}`, value: raw });
+  }
+
+  const hours = String(formData.get('workingHours') ?? '').trim();
+  if (hours) {
+    if (hours.length > 100) throw new Error('Working hours text is too long.');
+    updates.push({ key: 'contact.working_hours', value: hours });
+  } else {
+    removals.push('contact.working_hours');
+  }
+
+  for (const { key, value } of updates) {
+    const { error } = await supabase
+      .from('site_settings')
+      .upsert({ key, value, updated_by: account.profile.id } as never, { onConflict: 'key' });
+    if (error) throw new Error('Settings could not be saved. Verify the site_settings table exists (run pending migrations) and try again.');
+  }
+  for (const key of removals) {
+    await supabase.from('site_settings').delete().eq('key', key);
+  }
+
+  revalidatePath('/', 'layout');
+}

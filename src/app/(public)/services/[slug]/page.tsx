@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { SERVICES } from '@/lib/constants/services';
 import { BRAND } from '@/lib/constants/brand';
+import { getServiceCatalog, catalogBySlug, getSiteSettings, type ServiceCatalogEntry } from '@/lib/catalog';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { FAQSection } from '@/components/home/FAQSection';
@@ -77,14 +78,16 @@ const getIcon = (name: string) => {
 };
 
 export default async function ServiceDetailPage({ params }: ServicePageProps) {
+  // Prices and contact details are operator-managed; render per request.
+  const [catalog, settings] = await Promise.all([getServiceCatalog(), getSiteSettings()]);
   const resolvedParams = await params;
-  const service = SERVICES.find((s) => s.slug === resolvedParams.slug);
+  const service = catalogBySlug(catalog, resolvedParams.slug);
 
   if (!service) {
     notFound();
   }
 
-  const relatedServices = SERVICES.filter((s) => s.slug !== service.slug).slice(
+  const relatedServices: ServiceCatalogEntry[] = catalog.filter((s) => s.slug !== service.slug).slice(
     0,
     3
   );
@@ -102,7 +105,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
           '@type': 'HVACBusiness',
           name: BRAND.name,
           url: SITE_URL,
-          telephone: BRAND.contact.phone,
+          telephone: settings.phone,
         },
         areaServed: [
           { '@type': 'City', name: 'Bangalore' },
@@ -192,7 +195,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                   Book This Service
                 </Button>
                 <a
-                  href={`tel:${BRAND.contact.phone}`}
+                  href={`tel:${settings.phone}`}
                   className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700"
                   aria-label="Call Coolo"
                 >
@@ -335,7 +338,7 @@ export default async function ServiceDetailPage({ params }: ServicePageProps) {
                     Book This Service
                   </Button>
                   <a
-                    href={`https://wa.me/${BRAND.contact.whatsapp.replace('+', '')}?text=${encodeURIComponent(
+                    href={`https://wa.me/${settings.whatsapp.replace('+', '')}?text=${encodeURIComponent(
                       `Hi Coolo, I would like to book ${service.name}.`
                     )}`}
                     target="_blank"
